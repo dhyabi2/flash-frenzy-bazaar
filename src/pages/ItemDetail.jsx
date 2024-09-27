@@ -1,8 +1,9 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getFlashSaleItems } from '../utils/flashSaleData';
+import { toggleBookmark, shareProduct } from '../utils/productUtils';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Bookmark, Share2 } from 'lucide-react';
 
 const ItemDetail = () => {
   const { id } = useParams();
@@ -21,6 +22,14 @@ const ItemDetail = () => {
       </div>
     );
   }
+
+  const handleBookmark = () => {
+    toggleBookmark(item);
+  };
+
+  const handleShare = () => {
+    shareProduct(item);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -48,6 +57,16 @@ const ItemDetail = () => {
             <p className="text-gray-700 mb-6 text-right">
               وصف المنتج يظهر هنا. يمكن إضافة تفاصيل إضافية حول المنتج في هذا المكان.
             </p>
+            <div className="flex justify-between items-center mb-6">
+              <button onClick={handleBookmark} className="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
+                <Bookmark className="mr-2" />
+                حفظ
+              </button>
+              <button onClick={handleShare} className="flex items-center text-gray-600 hover:text-green-500 transition-colors duration-300">
+                <Share2 className="mr-2" />
+                مشاركة
+              </button>
+            </div>
             <button className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center">
               <ShoppingCart className="ml-2" />
               شراء الآن

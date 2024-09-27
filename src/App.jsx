@@ -8,6 +8,7 @@ import CategorySchedule from "./pages/CategorySchedule";
 import ItemDetail from "./pages/ItemDetail";
 import UploadManagement from "./pages/UploadManagement";
 import FAQ from "./pages/FAQ";
+import Bookmarks from "./pages/Bookmarks";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/item/:id" element={<ItemDetail />} />
             <Route path="/upload" element={<UploadManagement />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
           </Routes>
         </Layout>
       </BrowserRouter>
