@@ -1,16 +1,24 @@
 import { format, addDays } from 'date-fns';
 
 const categories = [
-  'Bags', 'Abayas', 'Dresses', 'Shoes', 'Accessories', 'Jewelry', 'Cosmetics'
+  { en: 'Bags', ar: 'حقائب' },
+  { en: 'Abayas', ar: 'عبايات' },
+  { en: 'Dresses', ar: 'فساتين' },
+  { en: 'Shoes', ar: 'أحذية' },
+  { en: 'Accessories', ar: 'إكسسوارات' },
+  { en: 'Jewelry', ar: 'مجوهرات' },
+  { en: 'Cosmetics', ar: 'مستحضرات تجميل' }
 ];
 
 export const getFlashSaleSchedule = () => {
   const today = new Date();
   return Array.from({ length: 7 }, (_, index) => {
     const date = addDays(today, index);
+    const category = categories[index % categories.length];
     return {
       date: format(date, 'EEEE'),
-      category: categories[index % categories.length],
+      category: category.en,
+      categoryAr: category.ar,
     };
   });
 };
