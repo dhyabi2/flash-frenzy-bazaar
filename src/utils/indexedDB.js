@@ -2,7 +2,7 @@ const DB_NAME = 'FlashSaleDB';
 const DB_VERSION = 1;
 const STORE_NAME = 'products';
 
-const openDB = () => {
+export const openDB = () => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
