@@ -52,14 +52,14 @@ const ProductCard = ({ product }) => (
     <h3 className="font-bold text-lg mb-2 text-right">{product.name}</h3>
     <p className="text-2xl font-semibold text-blue-600 mb-4 text-right">{product.price.toFixed(2)} ريال</p>
     <div className="flex justify-between items-center mb-4">
-      <button onClick={() => window.location.href = `tel:+1234567890`} className="text-gray-600 hover:text-blue-500">
-        <Phone size={20} />
+      <button onClick={() => window.location.href = `tel:+1234567890`} className="text-gray-600 hover:text-blue-500 transition-colors duration-300">
+        <Phone size={24} className="transform hover:scale-110" />
       </button>
-      <button onClick={() => shareProduct(product)} className="text-gray-600 hover:text-green-500">
-        <Share2 size={20} />
+      <button onClick={() => shareProduct(product)} className="text-gray-600 hover:text-green-500 transition-colors duration-300">
+        <Share2 size={24} className="transform hover:scale-110" />
       </button>
-      <button onClick={() => toggleBookmark(product)} className="text-gray-600 hover:text-yellow-500">
-        <Bookmark size={20} />
+      <button onClick={() => toggleBookmark(product)} className="text-gray-600 hover:text-yellow-500 transition-colors duration-300">
+        <Bookmark size={24} className="transform hover:scale-110" />
       </button>
     </div>
     <Link
