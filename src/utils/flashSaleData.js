@@ -1,4 +1,5 @@
 import { format, addDays } from 'date-fns';
+import { ar } from 'date-fns/locale';
 
 const categories = [
   { en: 'Bags', ar: 'حقائب' },
@@ -16,9 +17,9 @@ export const getFlashSaleSchedule = () => {
     const date = addDays(today, index);
     const category = categories[index % categories.length];
     return {
-      date: format(date, 'EEEE'),
-      category: category.ar, // Changed to use Arabic category
-      categoryEn: category.en, // Keep English category for reference if needed
+      date: format(date, 'EEEE', { locale: ar }),
+      category: category.ar,
+      categoryEn: category.en,
     };
   });
 };
@@ -29,7 +30,6 @@ export const getCurrentFlashSale = () => {
 };
 
 export const getFlashSaleItems = () => {
-  // This is a mock function. In a real application, you would fetch this data from an API.
   return [
     { id: 1, name: 'حقيبة يد جلدية', price: 129.99, image: '/placeholder.svg' },
     { id: 2, name: 'حقيبة ظهر قماشية', price: 79.99, image: '/placeholder.svg' },
