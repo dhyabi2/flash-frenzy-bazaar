@@ -1,16 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Calendar, Upload, BookmarkPlus, HelpCircle } from 'lucide-react';
+import { Home, Plus, BookmarkPlus, HelpCircle } from 'lucide-react';
 
 const Layout = ({ children }) => {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', icon: Home, label: 'الرئيسية' },
-    { path: '/schedule', icon: Calendar, label: 'الجدول' },
-    { path: '/upload', icon: Upload, label: 'رفع' },
-    { path: '/bookmark', icon: BookmarkPlus, label: 'حفظ' },
-    { path: '/faq', icon: HelpCircle, label: 'الأسئلة الشائعة' },
+    { path: '/', icon: Home },
+    { path: '/upload', icon: Plus },
+    { path: '/bookmark', icon: BookmarkPlus },
+    { path: '/faq', icon: HelpCircle },
   ];
 
   return (
@@ -30,14 +29,13 @@ const Layout = ({ children }) => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex flex-col items-center py-2 px-3 text-xs ${
+                className={`flex items-center py-4 px-3 ${
                   location.pathname === item.path
                     ? 'text-blue-500'
                     : 'text-gray-500 hover:text-blue-500'
                 }`}
               >
-                <item.icon className="h-6 w-6 mb-1" />
-                {item.label}
+                <item.icon className="h-6 w-6" />
               </Link>
             ))}
           </div>
