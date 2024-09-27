@@ -17,8 +17,8 @@ export const getFlashSaleSchedule = () => {
     const category = categories[index % categories.length];
     return {
       date: format(date, 'EEEE'),
-      category: category.en,
-      categoryAr: category.ar,
+      category: category.ar, // Changed to use Arabic category
+      categoryEn: category.en, // Keep English category for reference if needed
     };
   });
 };
@@ -31,9 +31,9 @@ export const getCurrentFlashSale = () => {
 export const getFlashSaleItems = () => {
   // This is a mock function. In a real application, you would fetch this data from an API.
   return [
-    { id: 1, name: 'Leather Tote Bag', price: 129.99, image: '/placeholder.svg' },
-    { id: 2, name: 'Canvas Backpack', price: 79.99, image: '/placeholder.svg' },
-    { id: 3, name: 'Crossbody Purse', price: 89.99, image: '/placeholder.svg' },
-    { id: 4, name: 'Weekender Duffel', price: 149.99, image: '/placeholder.svg' },
+    { id: 1, name: 'حقيبة يد جلدية', price: 129.99, image: '/placeholder.svg' },
+    { id: 2, name: 'حقيبة ظهر قماشية', price: 79.99, image: '/placeholder.svg' },
+    { id: 3, name: 'حقيبة كتف', price: 89.99, image: '/placeholder.svg' },
+    { id: 4, name: 'حقيبة سفر', price: 149.99, image: '/placeholder.svg' },
   ];
 };
