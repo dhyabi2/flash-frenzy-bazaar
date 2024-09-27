@@ -88,7 +88,7 @@ const Home = () => {
       <TopBanner />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CategoryNavigation />
-        <h2 className="text-2xl font-bold mb-4 text-right">عروض اليوم</h2>
+        <h2 className="text-2xl font-bold mb-4 text-right">منتجات اليوم</h2>
         <FlashSaleSection />
         <Link to="/schedule" className="block mt-8 text-blue-500 hover:text-blue-600 transition-colors duration-300">
           <div className="flex items-center justify-center">
