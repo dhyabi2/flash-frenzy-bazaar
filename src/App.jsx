@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import CategorySchedule from "./pages/CategorySchedule";
 import ItemDetail from "./pages/ItemDetail";
 import UploadManagement from "./pages/UploadManagement";
+import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
             <Route path="/schedule" element={<CategorySchedule />} />
             <Route path="/item/:id" element={<ItemDetail />} />
             <Route path="/upload" element={<UploadManagement />} />
+            <Route path="/faq" element={<FAQ />} />
           </Routes>
         </Layout>
       </BrowserRouter>

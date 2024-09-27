@@ -11,12 +11,12 @@ const CategorySchedule = () => {
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="container mx-auto">
         <Link to="/" className="inline-flex items-center text-blue-500 hover:text-blue-600 mb-6">
-          <ArrowLeft size={20} className="mr-2" />
-          Back to Home
+          <ArrowLeft size={20} className="ml-2" />
+          العودة إلى الرئيسية
         </Link>
-        <h1 className="text-3xl font-bold mb-6 flex items-center">
-          <Calendar className="mr-3" />
-          Weekly Flash Sale Schedule
+        <h1 className="text-3xl font-bold mb-6 flex items-center justify-end">
+          جدول البيع الفلاشي الأسبوعي
+          <Calendar className="ml-3" />
         </h1>
         <div className="grid gap-4">
           {schedule.map((day, index) => (
@@ -29,14 +29,14 @@ const CategorySchedule = () => {
                 index === 0 ? 'border-2 border-blue-500' : ''
               }`}
             >
-              <h2 className="text-xl font-semibold mb-2">{day.date}</h2>
-              <p className="text-lg text-gray-700">{day.category}</p>
+              <h2 className="text-xl font-semibold mb-2 text-right">{day.date}</h2>
+              <p className="text-lg text-gray-700 text-right">{day.category}</p>
               {index === 0 && (
                 <Link
                   to="/"
                   className="mt-4 inline-block bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300"
                 >
-                  View Today's Sale
+                  عرض بيع اليوم
                 </Link>
               )}
             </motion.div>

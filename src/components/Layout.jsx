@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Calendar, Upload } from 'lucide-react';
+import { Home, Calendar, Upload, BookmarkPlus, HelpCircle } from 'lucide-react';
 
 const Layout = ({ children }) => {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', icon: Home, label: 'Home' },
-    { path: '/schedule', icon: Calendar, label: 'Schedule' },
-    { path: '/upload', icon: Upload, label: 'Upload' },
+    { path: '/', icon: Home, label: 'الرئيسية' },
+    { path: '/schedule', icon: Calendar, label: 'الجدول' },
+    { path: '/upload', icon: Upload, label: 'رفع' },
+    { path: '/bookmark', icon: BookmarkPlus, label: 'حفظ' },
+    { path: '/faq', icon: HelpCircle, label: 'الأسئلة الشائعة' },
   ];
 
   return (
