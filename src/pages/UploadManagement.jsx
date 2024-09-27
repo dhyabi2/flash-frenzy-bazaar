@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCurrentFlashSale } from '../utils/flashSaleData';
 import { motion } from 'framer-motion';
 import { Upload, X, Camera } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { addProduct, getProducts } from '../utils/indexedDB';
 
 const UploadManagement = () => {
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImage, setProductImage] = useState(null);
+  const [products, setProducts] = useState([]);
 
   const currentSale = getCurrentFlashSale();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const fetchedProducts = await getProducts();
+      setProducts(fetchedProducts);
+    };
+    fetchProducts();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('جاري الإرسال:', { productName, productDescription, productPrice, productImage });
-    // Reset form after submission
-    setProductName('');
-    setProductDescription('');
-    setProductPrice('');
-    setProductImage(null);
+    const newProduct = {
+      name: productName,
+      description: productDescription,
+      price: parseFloat(productPrice),
+      image: productImage ? URL.createObjectURL(productImage) : null,
+      category: currentSale.category,
+    };
+
+    try {
+      await addProduct(newProduct);
+      const updatedProducts = await getProducts();
+      setProducts(updatedProducts);
+      
+      // Reset form after submission
+      setProductName('');
+      setProductDescription('');
+      setProductPrice('');
+      setProductImage(null);
+    } catch (error) {
+      console.error('Error adding product:', error);
+    }
   };
 
   return (
@@ -119,6 +144,21 @@ const UploadManagement = () => {
           </Button>
         </form>
       </motion.div>
+      
+      {/* Display uploaded products */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold mb-4 text-right">المنتجات المرفوعة</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {products.map((product) => (
+            <div key={product.id} className="bg-white p-4 rounded-lg shadow">
+              {product.image && <img src={product.image} alt={product.name} className="w-full h-48 object-cover mb-4 rounded" />}
+              <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+              <p className="text-gray-600 mb-2">{product.description}</p>
+              <p className="text-indigo-600 font-bold">{product.price} ريال</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
