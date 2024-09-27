@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
         <h1 className="text-2xl font-bold">Open س</h1>
       </header>
 
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow w-full">{children}</main>
 
       {/* Bottom Navigation Bar */}
       <nav className="bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0">

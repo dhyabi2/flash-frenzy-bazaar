@@ -74,7 +74,7 @@ const ProductCard = ({ product }) => (
 const FlashSaleSection = () => {
   const items = getFlashSaleItems();
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {items.map(item => (
         <ProductCard key={item.id} product={item} />
       ))}
@@ -86,7 +86,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <TopBanner />
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CategoryNavigation />
         <h2 className="text-2xl font-bold mb-4 text-right">عروض اليوم</h2>
         <FlashSaleSection />
