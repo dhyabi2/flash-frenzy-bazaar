@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getCurrentFlashSale, getFlashSaleSchedule, getFlashSaleItems } from '../utils/flashSaleData';
 import { motion } from 'framer-motion';
-import { Clock, ChevronRight } from 'lucide-react';
+import { Clock, ChevronRight, Phone, Share2, Bookmark } from 'lucide-react';
+import { shareProduct, toggleBookmark } from '../utils/productUtils';
 
 const TopBanner = () => {
   const currentSale = getCurrentFlashSale();
@@ -50,6 +51,17 @@ const ProductCard = ({ product }) => (
     <img src={product.image} alt={product.name} className="w-full h-48 object-cover mb-4 rounded-md" />
     <h3 className="font-bold text-lg mb-2 text-right">{product.name}</h3>
     <p className="text-2xl font-semibold text-blue-600 mb-4 text-right">{product.price.toFixed(2)} ريال</p>
+    <div className="flex justify-between items-center mb-4">
+      <button onClick={() => window.location.href = `tel:+1234567890`} className="text-gray-600 hover:text-blue-500">
+        <Phone size={20} />
+      </button>
+      <button onClick={() => shareProduct(product)} className="text-gray-600 hover:text-green-500">
+        <Share2 size={20} />
+      </button>
+      <button onClick={() => toggleBookmark(product)} className="text-gray-600 hover:text-yellow-500">
+        <Bookmark size={20} />
+      </button>
+    </div>
     <Link
       to={`/item/${product.id}`}
       className="block w-full bg-blue-500 text-white text-center px-4 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300"
