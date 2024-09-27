@@ -13,9 +13,9 @@ const ItemDetail = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Item not found</h1>
+          <h1 className="text-3xl font-bold mb-4">المنتج غير موجود</h1>
           <Link to="/" className="text-blue-500 hover:text-blue-600">
-            Return to Home
+            العودة إلى الصفحة الرئيسية
           </Link>
         </div>
       </div>
@@ -26,8 +26,8 @@ const ItemDetail = () => {
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="container mx-auto max-w-4xl">
         <Link to="/" className="inline-flex items-center text-blue-500 hover:text-blue-600 mb-6">
-          <ArrowLeft size={20} className="mr-2" />
-          Back to Flash Sale
+          <ArrowLeft size={20} className="ml-2" />
+          العودة إلى البيع الفلاشي
         </Link>
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <motion.img
@@ -43,14 +43,14 @@ const ItemDetail = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h1 className="text-3xl font-bold mb-4">{item.name}</h1>
-            <p className="text-2xl font-semibold text-blue-600 mb-6">${item.price.toFixed(2)}</p>
-            <p className="text-gray-700 mb-6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <h1 className="text-3xl font-bold mb-4 text-right">{item.name}</h1>
+            <p className="text-2xl font-semibold text-blue-600 mb-6 text-right">{item.price.toFixed(2)} ريال</p>
+            <p className="text-gray-700 mb-6 text-right">
+              وصف المنتج يظهر هنا. يمكن إضافة تفاصيل إضافية حول المنتج في هذا المكان.
             </p>
             <button className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center">
-              <ShoppingCart className="mr-2" />
-              Buy Now
+              <ShoppingCart className="ml-2" />
+              شراء الآن
             </button>
           </motion.div>
         </div>

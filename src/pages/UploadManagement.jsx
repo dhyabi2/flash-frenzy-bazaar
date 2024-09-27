@@ -13,7 +13,7 @@ const UploadManagement = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitting:', { productName, productDescription, productPrice, productImage });
+    console.log('جاري الإرسال:', { productName, productDescription, productPrice, productImage });
     // Reset form after submission
     setProductName('');
     setProductDescription('');
