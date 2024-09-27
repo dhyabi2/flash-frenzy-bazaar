@@ -25,12 +25,12 @@ const UploadManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8 pb-24"> {/* Added pb-24 for extra bottom padding */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8 pb-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl max-w-5xl mx-auto mb-16" {/* Added mb-16 for margin at the bottom */}
+        className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl max-w-5xl mx-auto mb-16"
       >
         <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-right text-indigo-800">رفع منتج لبيع اليوم الفلاشي</h1>
         <p className="mb-8 text-lg sm:text-xl text-gray-600 text-right">الفئة: <span className="font-semibold text-indigo-600">{currentSale.category}</span></p>
