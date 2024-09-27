@@ -15,7 +15,14 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Top Navigation Bar */}
+      <header className="bg-blue-500 text-white p-4 text-center">
+        <h1 className="text-2xl font-bold">Open س</h1>
+      </header>
+
       <main className="flex-grow">{children}</main>
+
+      {/* Bottom Navigation Bar */}
       <nav className="bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0">
         <div className="max-w-screen-xl mx-auto px-4">
           <div className="flex justify-around">
