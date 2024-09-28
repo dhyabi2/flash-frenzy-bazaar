@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingCart, Bookmark, Share2, Heart, Phone } from 'lucide-react';
+import { ShoppingCart, Bookmark, Share2, Heart, Phone } from 'lucide-react';
 import { fetchProducts, addLike, getLikes } from '../utils/api';
 import { shareProduct } from '../utils/productUtils';
 import { Button } from "@/components/ui/button";
@@ -89,9 +89,6 @@ const ItemDetail = () => {
           className="text-center"
         >
           <h1 className="text-3xl font-bold mb-4 text-deal-dark">{error}</h1>
-          <Link to="/" className="text-deal hover:text-deal-dark transition-colors">
-            العودة إلى الصفحة الرئيسية
-          </Link>
         </motion.div>
       </div>
     );
@@ -118,10 +115,6 @@ const ItemDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-elegant-light to-white">
       <div className="container mx-auto px-4 py-8">
-        <Link to="/" className="inline-flex items-center text-deal hover:text-deal-dark transition-colors mb-8">
-          <ArrowLeft size={20} className="ml-2" />
-          العودة إلى البيع الفلاشي
-        </Link>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
