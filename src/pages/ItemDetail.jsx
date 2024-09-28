@@ -21,8 +21,6 @@ const ItemDetail = () => {
         const foundItem = products.find(product => product.id === parseInt(id));
         if (foundItem) {
           setItem(foundItem);
-          // Here you would typically check if the item is bookmarked
-          // For now, we'll assume it's not bookmarked
           setIsBookmarked(false);
         } else {
           setError('المنتج غير موجود');
@@ -95,6 +93,17 @@ const ItemDetail = () => {
     ? item.price.toFixed(2) 
     : parseFloat(item.price || 0).toFixed(2);
 
+  // Function to get the correct image URL
+  const getImageUrl = () => {
+    if (item.image.startsWith('blob:')) {
+      return '/placeholder.svg';
+    } else if (item.image.startsWith('http')) {
+      return item.image;
+    } else {
+      return `https://kul-yoom.replit.app${item.image}`;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="container mx-auto max-w-4xl">
@@ -107,7 +116,7 @@ const ItemDetail = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            src={item.image}
+            src={getImageUrl()}
             alt={item.name}
             className="w-full h-64 object-cover mb-6 rounded-lg"
           />
