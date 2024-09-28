@@ -55,14 +55,14 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         deal: {
-          light: "#FFD700",
-          DEFAULT: "#FFA500",
-          dark: "#FF8C00",
+          light: "#FF6B6B",
+          DEFAULT: "#FF0000",
+          dark: "#B22222",
         },
         elegant: {
-          light: "#F0F4F8",
-          DEFAULT: "#D0D9E1",
-          dark: "#A9B6C2",
+          light: "#F8E0E0",
+          DEFAULT: "#D8BFD8",
+          dark: "#8B7B8B",
         },
       },
       borderRadius: {
