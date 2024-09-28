@@ -36,15 +36,44 @@ const CountdownTimer = () => {
 
   return (
     <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600 direction-ltr">
-      <span>{formatTime(timeLeft.seconds)}</span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={`hours-${timeLeft.hours}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {formatTime(timeLeft.hours)}
+        </motion.span>
+      </AnimatePresence>
       <span className="text-4xl">:</span>
-      <span>{formatTime(timeLeft.minutes)}</span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={`minutes-${timeLeft.minutes}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {formatTime(timeLeft.minutes)}
+        </motion.span>
+      </AnimatePresence>
       <span className="text-4xl">:</span>
-      <span>{formatTime(timeLeft.hours)}</span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={`seconds-${timeLeft.seconds}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {formatTime(timeLeft.seconds)}
+        </motion.span>
+      </AnimatePresence>
     </div>
   );
 };
-
 
 const TopBanner = () => {
   const currentSale = getCurrentFlashSale();
