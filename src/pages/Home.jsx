@@ -1,80 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getCurrentFlashSale, getFlashSaleSchedule } from '../utils/flashSaleData';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { getProducts } from '../utils/indexedDB';
-
-const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 12, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prevTime => {
-        if (prevTime.hours === 0 && prevTime.minutes === 0 && prevTime.seconds === 0) {
-          clearInterval(timer);
-          return prevTime;
-        }
-        let newSeconds = prevTime.seconds - 1;
-        let newMinutes = prevTime.minutes;
-        let newHours = prevTime.hours;
-        if (newSeconds < 0) {
-          newSeconds = 59;
-          newMinutes -= 1;
-        }
-        if (newMinutes < 0) {
-          newMinutes = 59;
-          newHours -= 1;
-        }
-        return { hours: newHours, minutes: newMinutes, seconds: newSeconds };
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (time) => time.toString().padStart(2, '0');
-
-  return (
-    <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600" style={{ direction: 'ltr' }}>
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={`hours-${timeLeft.hours}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {formatTime(timeLeft.hours)}
-        </motion.span>
-      </AnimatePresence>
-      <span className="text-4xl">:</span>
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={`minutes-${timeLeft.minutes}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {formatTime(timeLeft.minutes)}
-        </motion.span>
-      </AnimatePresence>
-      <span className="text-4xl">:</span>
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={`seconds-${timeLeft.seconds}`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {formatTime(timeLeft.seconds)}
-        </motion.span>
-      </AnimatePresence>
-    </div>
-  );
-};
+import CountdownTimer from '../components/CountdownTimer';
 
 const TopBanner = () => {
   const currentSale = getCurrentFlashSale();
@@ -125,15 +56,17 @@ const FlashSaleSection = ({ products, onUpdate }) => {
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const currentSale = getCurrentFlashSale();
 
   const fetchProducts = async () => {
     const fetchedProducts = await getProducts();
-    setProducts(fetchedProducts.sort((a, b) => (b.likes || 0) - (a.likes || 0)));
+    const filteredProducts = fetchedProducts.filter(product => product.category === currentSale.categoryEn);
+    setProducts(filteredProducts.sort((a, b) => (b.likes || 0) - (a.likes || 0)));
   };
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [currentSale.categoryEn]);
 
   return (
     <div className="min-h-screen bg-red-50">

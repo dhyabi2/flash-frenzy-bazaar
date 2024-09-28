@@ -1,4 +1,4 @@
-import { format, addDays } from 'date-fns';
+import { format, addDays, differenceInSeconds, startOfDay, addHours } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
 const categories = [
@@ -11,8 +11,13 @@ const categories = [
   { en: 'Cosmetics', ar: 'مستحضرات تجميل' }
 ];
 
+const getMuscatTime = () => {
+  const now = new Date();
+  return addHours(now, 4); // GMT+4
+};
+
 export const getFlashSaleSchedule = () => {
-  const today = new Date();
+  const today = getMuscatTime();
   return Array.from({ length: 7 }, (_, index) => {
     const date = addDays(today, index);
     const category = categories[index % categories.length];
@@ -27,6 +32,12 @@ export const getFlashSaleSchedule = () => {
 export const getCurrentFlashSale = () => {
   const schedule = getFlashSaleSchedule();
   return schedule[0];
+};
+
+export const getTimeUntilNextDay = () => {
+  const now = getMuscatTime();
+  const nextDay = addDays(startOfDay(now), 1);
+  return differenceInSeconds(nextDay, now);
 };
 
 export const getFlashSaleItems = () => {
