@@ -1,4 +1,4 @@
-import { format, addDays, differenceInSeconds, startOfDay, addHours } from 'date-fns';
+import { format, addDays, differenceInSeconds, startOfDay, addHours, setHours } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
 const categories = [
@@ -36,7 +36,7 @@ export const getCurrentFlashSale = () => {
 
 export const getTimeUntilNextDay = () => {
   const now = getMuscatTime();
-  const nextDay = addDays(startOfDay(now), 1);
+  const nextDay = setHours(addDays(startOfDay(now), 1), 12); // Set to 12:00 PM
   return differenceInSeconds(nextDay, now);
 };
 

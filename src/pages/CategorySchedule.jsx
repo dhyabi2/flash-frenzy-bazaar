@@ -15,7 +15,7 @@ const CategorySchedule = () => {
           العودة إلى الرئيسية
         </Link>
         <h1 className="text-3xl font-bold mb-6 flex items-center justify-end">
-          جدول البيع الفلاشي الأسبوعي
+          جدول كل يوم الأسبوعي
           <Calendar className="ml-3" />
         </h1>
         <div className="grid gap-4">
@@ -36,7 +36,7 @@ const CategorySchedule = () => {
                   to="/"
                   className="mt-4 inline-block bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300"
                 >
-                  عرض بيع اليوم
+                  عرض كل يوم
                 </Link>
               )}
             </motion.div>

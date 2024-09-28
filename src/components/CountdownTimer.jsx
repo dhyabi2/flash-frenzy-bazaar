@@ -11,7 +11,7 @@ const CountdownTimer = () => {
       setTimeLeft(newTimeLeft);
       if (newTimeLeft <= 0) {
         clearInterval(timer);
-        window.location.reload(); // Refresh the page at midnight
+        window.location.reload(); // Refresh the page at 12:00 PM
       }
     }, 1000);
     return () => clearInterval(timer);
