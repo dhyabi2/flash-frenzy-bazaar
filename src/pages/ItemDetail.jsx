@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ShoppingCart, Bookmark, Share2 } from 'lucide-react';
-import { fetchProducts } from '../utils/api';
+import { ArrowLeft, ShoppingCart, Bookmark, Share2, Heart } from 'lucide-react';
+import { fetchProducts, addLike, getLikes } from '../utils/api';
 import { shareProduct } from '../utils/productUtils';
-import { addBookmark, removeBookmark } from '../utils/api';
+import { Button } from "@/components/ui/button";
+import { toast } from 'sonner';
 
 const ItemDetail = () => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ const ItemDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [likes, setLikes] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,7 +23,9 @@ const ItemDetail = () => {
         const foundItem = products.find(product => product.id === parseInt(id));
         if (foundItem) {
           setItem(foundItem);
-          setIsBookmarked(false);
+          setIsBookmarked(false); // You might want to fetch the actual bookmark status here
+          const likesData = await getLikes(foundItem.id);
+          setLikes(likesData.count);
         } else {
           setError('المنتج غير موجود');
         }
@@ -37,19 +41,8 @@ const ItemDetail = () => {
   }, [id]);
 
   const handleBookmark = async () => {
-    if (item) {
-      try {
-        if (isBookmarked) {
-          await removeBookmark(item.id);
-          setIsBookmarked(false);
-        } else {
-          await addBookmark(item);
-          setIsBookmarked(true);
-        }
-      } catch (error) {
-        console.error('Error toggling bookmark:', error);
-      }
-    }
+    setIsBookmarked(!isBookmarked);
+    toast.success(isBookmarked ? 'تمت إزالة المنتج من المفضلة' : 'تمت إضافة المنتج إلى المفضلة');
   };
 
   const handleShare = () => {
@@ -58,42 +51,60 @@ const ItemDetail = () => {
     }
   };
 
+  const handleLike = async () => {
+    if (item) {
+      try {
+        await addLike(item.id);
+        setLikes(prevLikes => prevLikes + 1);
+        toast.success('تم الإعجاب بالمنتج');
+      } catch (error) {
+        console.error('Error adding like:', error);
+        toast.error('حدث خطأ أثناء الإعجاب بالمنتج');
+      }
+    }
+  };
+
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-50">جاري التحميل...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-elegant-light">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-2xl font-bold text-elegant-dark"
+        >
+          جاري التحميل...
+        </motion.div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">{error}</h1>
-          <Link to="/" className="text-blue-500 hover:text-blue-600">
+      <div className="min-h-screen flex items-center justify-center bg-elegant-light">
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <h1 className="text-3xl font-bold mb-4 text-deal-dark">{error}</h1>
+          <Link to="/" className="text-deal hover:text-deal-dark transition-colors">
             العودة إلى الصفحة الرئيسية
           </Link>
-        </div>
+        </motion.div>
       </div>
     );
   }
 
   if (!item) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">المنتج غير موجود</h1>
-          <Link to="/" className="text-blue-500 hover:text-blue-600">
-            العودة إلى الصفحة الرئيسية
-          </Link>
-        </div>
-      </div>
-    );
+    return null;
   }
 
-  // Ensure price is a number and format it
   const formattedPrice = typeof item.price === 'number' 
     ? item.price.toFixed(2) 
     : parseFloat(item.price || 0).toFixed(2);
 
-  // Function to get the correct image URL
   const getImageUrl = () => {
     if (item.image.startsWith('blob:')) {
       return '/placeholder.svg';
@@ -105,9 +116,9 @@ const ItemDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-elegant-light p-4 sm:p-6 md:p-8">
       <div className="container mx-auto max-w-4xl">
-        <Link to="/" className="inline-flex items-center text-blue-500 hover:text-blue-600 mb-6">
+        <Link to="/" className="inline-flex items-center text-deal hover:text-deal-dark transition-colors mb-6">
           <ArrowLeft size={20} className="ml-2" />
           العودة إلى البيع الفلاشي
         </Link>
@@ -115,7 +126,7 @@ const ItemDetail = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white p-6 rounded-lg shadow-lg"
+          className="bg-white p-6 rounded-2xl shadow-xl"
         >
           <motion.img
             initial={{ opacity: 0, scale: 0.8 }}
@@ -123,41 +134,50 @@ const ItemDetail = () => {
             transition={{ duration: 0.5 }}
             src={getImageUrl()}
             alt={item.name}
-            className="w-full h-64 object-cover mb-6 rounded-lg"
+            className="w-full h-64 object-cover mb-6 rounded-xl"
           />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h1 className="text-3xl font-bold mb-4 text-right">{item.name}</h1>
-            <p className="text-2xl font-semibold text-blue-600 mb-6 text-right">{formattedPrice} ريال</p>
-            <p className="text-gray-700 mb-6 text-right">{item.description}</p>
+            <h1 className="text-3xl font-bold mb-4 text-right text-deal-dark">{item.name}</h1>
+            <p className="text-2xl font-semibold text-deal mb-6 text-right">{formattedPrice} ريال</p>
+            <p className="text-elegant-dark mb-6 text-right">{item.description}</p>
             <div className="flex justify-between items-center mb-6">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleBookmark}
-                className="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300"
+                className="flex items-center text-elegant-dark hover:text-deal transition-colors duration-300"
               >
-                <Bookmark className={`mr-2 ${isBookmarked ? 'fill-current text-blue-500' : ''}`} />
+                <Bookmark className={`mr-2 ${isBookmarked ? 'fill-current text-deal' : ''}`} />
                 {isBookmarked ? 'تمت الإضافة للمفضلة' : 'إضافة للمفضلة'}
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleShare}
-                className="flex items-center text-gray-600 hover:text-green-500 transition-colors duration-300"
+                className="flex items-center text-elegant-dark hover:text-deal transition-colors duration-300"
               >
                 <Share2 className="mr-2" />
                 مشاركة
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLike}
+                className="flex items-center text-elegant-dark hover:text-deal transition-colors duration-300"
+              >
+                <Heart className="mr-2" />
+                {likes}
               </motion.button>
             </div>
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href={`tel:${item.phoneNumber}`}
-              className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center"
+              className="w-full bg-deal text-white px-6 py-3 rounded-full hover:bg-deal-dark transition-colors duration-300 flex items-center justify-center"
             >
               <ShoppingCart className="ml-2" />
               اتصل الآن

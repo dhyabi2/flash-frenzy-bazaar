@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Phone, Share2, Bookmark, Heart } from 'lucide-react';
 import { shareProduct } from '../utils/productUtils';
 import { addLike, getLikes, addBookmark, removeBookmark } from '../utils/api';
+import { toast } from 'sonner';
 
 const ProductCard = ({ product, onUpdate }) => {
   const [likes, setLikes] = useState(product.likes || 0);
@@ -30,8 +31,10 @@ const ProductCard = ({ product, onUpdate }) => {
       await addLike(product.id);
       setLikes(prevLikes => prevLikes + 1);
       if (onUpdate) onUpdate();
+      toast.success('تم الإعجاب بالمنتج');
     } catch (error) {
       console.error('Error adding like:', error);
+      toast.error('حدث خطأ أثناء الإعجاب بالمنتج');
     }
   };
 
@@ -39,14 +42,21 @@ const ProductCard = ({ product, onUpdate }) => {
     try {
       if (isBookmarkedState) {
         await removeBookmark(product.id);
+        toast.success('تمت إزالة المنتج من المفضلة');
       } else {
         await addBookmark(product);
+        toast.success('تمت إضافة المنتج إلى المفضلة');
       }
       setIsBookmarkedState(!isBookmarkedState);
       if (onUpdate) onUpdate();
     } catch (error) {
       console.error('Error toggling bookmark:', error);
+      toast.error('حدث خطأ أثناء تحديث المفضلة');
     }
+  };
+
+  const handleShare = () => {
+    shareProduct(product);
   };
 
   const handleImageError = () => {
@@ -55,18 +65,14 @@ const ProductCard = ({ product, onUpdate }) => {
 
   const getImageUrl = () => {
     if (product.image.startsWith('blob:')) {
-      // For blob URLs, use a placeholder image
       return '/placeholder.svg';
     } else if (product.image.startsWith('http')) {
-      // If it's already a full URL, use it as is
       return product.image;
     } else {
-      // If it's a relative path, prepend the API base URL
       return `https://kul-yoom.replit.app${product.image}`;
     }
   };
 
-  // Ensure price is a number and format it
   const formattedPrice = typeof product.price === 'number' 
     ? product.price.toFixed(2) 
     : parseFloat(product.price || 0).toFixed(2);
@@ -80,25 +86,25 @@ const ProductCard = ({ product, onUpdate }) => {
         onError={handleImageError}
       />
       <h3 className="font-bold text-lg mb-2 text-right">{product.name}</h3>
-      <p className="text-2xl font-semibold text-red-600 mb-4 text-right">{formattedPrice} ريال</p>
+      <p className="text-2xl font-semibold text-deal mb-4 text-right">{formattedPrice} ريال</p>
       <div className="flex justify-between items-center mb-4">
-        <a href={`tel:${product.phoneNumber}`} className="text-red-800 hover:text-red-600 transition-colors duration-300">
+        <a href={`tel:${product.phoneNumber}`} className="text-deal-dark hover:text-deal transition-colors duration-300">
           <Phone size={24} className="transform hover:scale-110" />
         </a>
-        <button onClick={() => shareProduct(product)} className="text-red-800 hover:text-red-600 transition-colors duration-300">
+        <button onClick={handleShare} className="text-deal-dark hover:text-deal transition-colors duration-300">
           <Share2 size={24} className="transform hover:scale-110" />
         </button>
-        <button onClick={handleBookmark} className="text-red-800 hover:text-red-600 transition-colors duration-300">
+        <button onClick={handleBookmark} className="text-deal-dark hover:text-deal transition-colors duration-300">
           <Bookmark size={24} className={`transform hover:scale-110 ${isBookmarkedState ? 'fill-current' : ''}`} />
         </button>
-        <button onClick={handleLike} className="text-red-800 hover:text-red-600 transition-colors duration-300 flex items-center">
+        <button onClick={handleLike} className="text-deal-dark hover:text-deal transition-colors duration-300 flex items-center">
           <Heart size={24} className="transform hover:scale-110 fill-current mr-1" />
           <span>{likes}</span>
         </button>
       </div>
       <Link
         to={`/item/${product.id}`}
-        className="block w-full bg-red-600 text-white text-center px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-300"
+        className="block w-full bg-deal text-white text-center px-4 py-2 rounded-full hover:bg-deal-dark transition-colors duration-300"
       >
         عرض التفاصيل
       </Link>
