@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCurrentFlashSale, getFlashSaleItems } from '../utils/flashSaleData';
+import { getCurrentFlashSale, getFlashSaleItems, getFlashSaleSchedule } from '../utils/flashSaleData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, ChevronRight, Phone, Share2, Bookmark } from 'lucide-react';
 import { shareProduct, toggleBookmark } from '../utils/productUtils';
@@ -35,7 +35,7 @@ const CountdownTimer = () => {
   const formatTime = (time) => time.toString().padStart(2, '0');
 
   return (
-    <div className="flex items-center justify-center space-x-2 text-4xl font-bold text-red-600">
+    <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600">
       <AnimatePresence mode="popLayout">
         <motion.span key={timeLeft.hours} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} transition={{ duration: 0.3 }}>
           {formatTime(timeLeft.hours)}
