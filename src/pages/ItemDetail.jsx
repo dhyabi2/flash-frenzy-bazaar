@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ShoppingCart, Bookmark, Share2 } from 'lucide-react';
 import { fetchProducts } from '../utils/api';
 import { shareProduct } from '../utils/productUtils';
@@ -111,7 +111,12 @@ const ItemDetail = () => {
           <ArrowLeft size={20} className="ml-2" />
           العودة إلى البيع الفلاشي
         </Link>
-        <div className="bg-white p-6 rounded-lg shadow-lg">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white p-6 rounded-lg shadow-lg"
+        >
           <motion.img
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -129,21 +134,36 @@ const ItemDetail = () => {
             <p className="text-2xl font-semibold text-blue-600 mb-6 text-right">{formattedPrice} ريال</p>
             <p className="text-gray-700 mb-6 text-right">{item.description}</p>
             <div className="flex justify-between items-center mb-6">
-              <button onClick={handleBookmark} className="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleBookmark}
+                className="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300"
+              >
                 <Bookmark className={`mr-2 ${isBookmarked ? 'fill-current text-blue-500' : ''}`} />
                 {isBookmarked ? 'تمت الإضافة للمفضلة' : 'إضافة للمفضلة'}
-              </button>
-              <button onClick={handleShare} className="flex items-center text-gray-600 hover:text-green-500 transition-colors duration-300">
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleShare}
+                className="flex items-center text-gray-600 hover:text-green-500 transition-colors duration-300"
+              >
                 <Share2 className="mr-2" />
                 مشاركة
-              </button>
+              </motion.button>
             </div>
-            <a href={`tel:${item.phoneNumber}`} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center">
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href={`tel:${item.phoneNumber}`}
+              className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center"
+            >
               <ShoppingCart className="ml-2" />
               اتصل الآن
-            </a>
+            </motion.a>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

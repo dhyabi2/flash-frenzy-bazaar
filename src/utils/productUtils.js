@@ -4,7 +4,7 @@ export const shareProduct = (product) => {
   if (navigator.share) {
     navigator.share({
       title: product.name,
-      text: `Check out this amazing deal: ${product.name} for ${product.price} SAR!`,
+      text: `Check out this amazing deal: ${product.name} for ${product.price} ريال!`,
       url: window.location.href,
     }).then(() => {
       console.log('Successfully shared');
@@ -12,7 +12,15 @@ export const shareProduct = (product) => {
       console.error('Error sharing:', error);
     });
   } else {
-    alert(`Share this product: ${product.name}\nPrice: ${product.price} SAR\nURL: ${window.location.href}`);
+    // Fallback for browsers that don't support the Web Share API
+    const shareText = `Check out this amazing deal: ${product.name} for ${product.price} ريال!\n${window.location.href}`;
+    const tempInput = document.createElement('textarea');
+    tempInput.value = shareText;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert('تم نسخ رابط المنتج إلى الحافظة. يمكنك مشاركته الآن.');
   }
 };
 
