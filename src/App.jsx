@@ -9,6 +9,7 @@ import ItemDetail from "./pages/ItemDetail";
 import UploadManagement from "./pages/UploadManagement";
 import FAQ from "./pages/FAQ";
 import Bookmarks from "./pages/Bookmarks";
+import AdminPage from "./pages/AdminPage";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/upload" element={<UploadManagement />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </Layout>
       </BrowserRouter>

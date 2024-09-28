@@ -50,6 +50,17 @@ export const getProducts = async () => {
   });
 };
 
+export const deleteProduct = async (productId) => {
+  const db = await openDB();
+  const transaction = db.transaction(PRODUCT_STORE, 'readwrite');
+  const store = transaction.objectStore(PRODUCT_STORE);
+  return new Promise((resolve, reject) => {
+    const request = store.delete(productId);
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+  });
+};
+
 export const addBookmark = async (product) => {
   const db = await openDB();
   const transaction = db.transaction(BOOKMARK_STORE, 'readwrite');
