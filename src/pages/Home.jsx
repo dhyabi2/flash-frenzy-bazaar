@@ -36,22 +36,15 @@ const CountdownTimer = () => {
 
   return (
     <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600 direction-ltr">
-      <AnimatePresence mode="popLayout">
-        <motion.span key={timeLeft.seconds} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} transition={{ duration: 0.3 }}>
-          {formatTime(timeLeft.seconds)}
-        </motion.span>
-        <span>:</span>
-        <motion.span key={timeLeft.minutes} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} transition={{ duration: 0.3 }}>
-          {formatTime(timeLeft.minutes)}
-        </motion.span>
-        <span>:</span>
-        <motion.span key={timeLeft.hours} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} transition={{ duration: 0.3 }}>
-          {formatTime(timeLeft.hours)}
-        </motion.span>
-      </AnimatePresence>
+      <span>{formatTime(timeLeft.seconds)}</span>
+      <span className="text-4xl">:</span>
+      <span>{formatTime(timeLeft.minutes)}</span>
+      <span className="text-4xl">:</span>
+      <span>{formatTime(timeLeft.hours)}</span>
     </div>
   );
 };
+
 
 const TopBanner = () => {
   const currentSale = getCurrentFlashSale();
@@ -147,5 +140,7 @@ const Home = () => {
     </div>
   );
 };
+
+export default Home;
 
 export default Home;
