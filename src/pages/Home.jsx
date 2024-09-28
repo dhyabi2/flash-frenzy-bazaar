@@ -62,7 +62,7 @@ const TopBanner = () => {
       transition={{ duration: 0.5 }}
       className="bg-gradient-to-r from-red-800 to-red-600 text-white p-6 rounded-b-lg shadow-lg text-right"
     >
-      <h1 className="text-3xl font-bold mb-2">كل يوم</h1>
+      <h1 className="text-3xl font-bold mb-2">اليوم البيع</h1>
       <p className="text-xl">{currentSale.category}</p>
       <div className="mt-4">
         <CountdownTimer />
