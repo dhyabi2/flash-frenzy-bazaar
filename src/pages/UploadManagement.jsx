@@ -50,15 +50,15 @@ const UploadManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 p-4 sm:p-6 md:p-8 pb-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl max-w-5xl mx-auto mb-16"
       >
-        <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-right text-indigo-800">رفع منتج لبيع اليوم الفلاشي</h1>
-        <p className="mb-8 text-lg sm:text-xl text-gray-600 text-right">الفئة: <span className="font-semibold text-indigo-600">{currentSale.category}</span></p>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-right text-red-800">رفع منتج لبيع اليوم الفلاشي</h1>
+        <p className="mb-8 text-lg sm:text-xl text-gray-600 text-right">الفئة: <span className="font-semibold text-red-600">{currentSale.category}</span></p>
         <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
@@ -70,7 +70,7 @@ const UploadManagement = () => {
                 type="text"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right transition duration-200"
+                className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
                 required
               />
             </div>
@@ -83,7 +83,7 @@ const UploadManagement = () => {
                 type="number"
                 value={productPrice}
                 onChange={(e) => setProductPrice(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right transition duration-200"
+                className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
                 required
               />
             </div>
@@ -96,7 +96,7 @@ const UploadManagement = () => {
               id="productDescription"
               value={productDescription}
               onChange={(e) => setProductDescription(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-right transition duration-200"
+              className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
               rows="4"
               required
             />
@@ -105,7 +105,7 @@ const UploadManagement = () => {
             <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productImage">
               الصورة
             </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-500 transition duration-300">
+            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-red-300 border-dashed rounded-lg hover:border-red-500 transition duration-300">
               <div className="space-y-1 text-center">
                 {productImage ? (
                   <div className="relative">
@@ -119,12 +119,12 @@ const UploadManagement = () => {
                     </button>
                   </div>
                 ) : (
-                  <Camera className="mx-auto h-16 w-16 text-gray-400" />
+                  <Camera className="mx-auto h-16 w-16 text-red-400" />
                 )}
                 <div className="flex text-sm text-gray-600 justify-center">
                   <label
                     htmlFor="productImage"
-                    className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500 transition duration-200"
+                    className="relative cursor-pointer bg-white rounded-md font-medium text-red-600 hover:text-red-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 transition duration-200"
                   >
                     <span>رفع ملف</span>
                     <input id="productImage" name="productImage" type="file" className="sr-only" onChange={(e) => setProductImage(e.target.files[0])} required />
@@ -137,7 +137,7 @@ const UploadManagement = () => {
           </div>
           <Button
             type="submit"
-            className="w-full bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 transition-colors duration-300 flex items-center justify-center"
+            className="w-full bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition-colors duration-300 flex items-center justify-center"
           >
             <Upload className="ml-2" />
             رفع المنتج
@@ -147,14 +147,14 @@ const UploadManagement = () => {
       
       {/* Display uploaded products */}
       <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4 text-right">المنتجات المرفوعة</h2>
+        <h2 className="text-2xl font-bold mb-4 text-right text-red-800">المنتجات المرفوعة</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.map((product) => (
             <div key={product.id} className="bg-white p-4 rounded-lg shadow">
               {product.image && <img src={product.image} alt={product.name} className="w-full h-48 object-cover mb-4 rounded" />}
               <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
               <p className="text-gray-600 mb-2">{product.description}</p>
-              <p className="text-indigo-600 font-bold">{product.price} ريال</p>
+              <p className="text-red-600 font-bold">{product.price} ريال</p>
             </div>
           ))}
         </div>

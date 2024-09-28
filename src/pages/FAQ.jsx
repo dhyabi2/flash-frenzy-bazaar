@@ -7,7 +7,7 @@ import { Search, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 const faqCategories = [
   {
-    name: "General",
+    name: "عام",
     icon: "🌟",
     questions: [
       {
@@ -70,13 +70,13 @@ const FAQ = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl sm:text-5xl font-bold mb-8 text-center text-indigo-800"
+          className="text-4xl sm:text-5xl font-bold mb-8 text-center text-red-800"
         >
           استكشف عالم كل يوم
         </motion.h1>
@@ -92,9 +92,9 @@ const FAQ = () => {
             placeholder="ابحث في الأسئلة الشائعة..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-4 pr-12 text-lg rounded-full border-2 border-indigo-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            className="w-full p-4 pr-12 text-lg rounded-full border-2 border-red-300 focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50"
           />
-          <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-indigo-400" />
+          <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-red-400" />
         </motion.div>
 
         <AnimatePresence>
@@ -107,7 +107,7 @@ const FAQ = () => {
               transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
               className="mb-8 bg-white rounded-2xl shadow-xl overflow-hidden"
             >
-              <div className="bg-indigo-600 text-white p-4 flex items-center">
+              <div className="bg-red-600 text-white p-4 flex items-center">
                 <span className="text-3xl mr-3">{category.icon}</span>
                 <h2 className="text-2xl font-semibold">{category.name}</h2>
               </div>
