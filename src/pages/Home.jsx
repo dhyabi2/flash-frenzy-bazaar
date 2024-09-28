@@ -34,57 +34,32 @@ const CountdownTimer = () => {
 
   const formatTime = (time) => time.toString().padStart(2, '0');
 
-  const flipVariants = {
-    initial: { rotateX: 0 },
-    animate: { rotateX: 360 },
-  };
+  return (
+    <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600 direction-ltr">
+      <span>{formatTime(timeLeft.seconds)}</span>
+      <span className="text-4xl">:</span>
+      <span>{formatTime(timeLeft.minutes)}</span>
+      <span className="text-4xl">:</span>
+      <span>{formatTime(timeLeft.hours)}</span>
+    </div>
+  );
+};
 
-  const pulseVariants = {
-    initial: { scale: 1 },
-    animate: { scale: [1, 1.05, 1], transition: { duration: 2, repeat: Infinity } },
-  };
 
-  const separatorVariants = {
-    initial: { color: '#DC2626' },
-    animate: { color: ['#DC2626', '#EF4444', '#DC2626'], transition: { duration: 2, repeat: Infinity } },
-  };
-
-  const hoursVariants = {
-    initial: { scale: 1 },
-    animate: { scale: [1, 1.1, 1], transition: { duration: 1, repeat: Infinity } },
-  };
-
-  const secondsVariants = {
-    initial: { x: 0 },
-    animate: { x: [-2, 2, -2, 2, 0], transition: { duration: 0.5, repeat: Infinity } },
-  };
-
+const TopBanner = () => {
+  const currentSale = getCurrentFlashSale();
   return (
     <motion.div
-      className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600 direction-ltr"
-      variants={pulseVariants}
-      initial="initial"
-      animate="animate"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="bg-gradient-to-r from-red-800 to-red-600 text-white p-6 rounded-b-lg shadow-lg text-right"
     >
-      <motion.span variants={hoursVariants}>{formatTime(timeLeft.hours)}</motion.span>
-      <motion.span variants={separatorVariants} initial="initial" animate="animate" className="text-4xl">:</motion.span>
-      <motion.span
-        key={timeLeft.minutes}
-        variants={flipVariants}
-        initial="initial"
-        animate="animate"
-      >
-        {formatTime(timeLeft.minutes)}
-      </motion.span>
-      <motion.span variants={separatorVariants} initial="initial" animate="animate" className="text-4xl">:</motion.span>
-      <motion.span
-        key={timeLeft.seconds}
-        variants={secondsVariants}
-        initial="initial"
-        animate="animate"
-      >
-        {formatTime(timeLeft.seconds)}
-      </motion.span>
+      <h1 className="text-3xl font-bold mb-2">اليوم البيع</h1>
+      <p className="text-xl">{currentSale.category}</p>
+      <div className="mt-4">
+        <CountdownTimer />
+      </div>
     </motion.div>
   );
 };
@@ -150,6 +125,7 @@ const FlashSaleSection = () => {
 const Home = () => {
   return (
     <div className="min-h-screen bg-red-50">
+      <TopBanner />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CategoryNavigation />
         <h2 className="text-2xl font-bold mb-4 text-right text-red-800">منتجات اليوم</h2>
