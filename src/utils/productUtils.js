@@ -1,4 +1,4 @@
-import { addBookmark, removeBookmark, getBookmarks } from './indexedDB';
+import { addBookmark, removeBookmark, getBookmarks as getBookmarksFromDB } from './indexedDB';
 
 export const shareProduct = (product) => {
   if (navigator.share) {
@@ -18,20 +18,30 @@ export const shareProduct = (product) => {
 
 export const toggleBookmark = async (product) => {
   try {
-    const bookmarks = await getBookmarks();
+    const bookmarks = await getBookmarksFromDB();
     const isBookmarked = bookmarks.some(bookmark => bookmark.id === product.id);
     
     if (isBookmarked) {
       await removeBookmark(product.id);
-      alert('تمت إزالة المنتج من المفضلة');
+      return false;
     } else {
       await addBookmark(product);
-      alert('تمت إضافة المنتج إلى المفضلة');
+      return true;
     }
   } catch (error) {
     console.error('Error toggling bookmark:', error);
-    alert('حدث خطأ أثناء تحديث المفضلة');
+    return false;
   }
 };
 
-export { getBookmarks };
+export const isBookmarked = async (productId) => {
+  try {
+    const bookmarks = await getBookmarksFromDB();
+    return bookmarks.some(bookmark => bookmark.id === productId);
+  } catch (error) {
+    console.error('Error checking bookmark status:', error);
+    return false;
+  }
+};
+
+export const getBookmarks = getBookmarksFromDB;

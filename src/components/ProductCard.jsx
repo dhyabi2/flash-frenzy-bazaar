@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Share2, Bookmark, Heart } from 'lucide-react';
-import { shareProduct, toggleBookmark } from '../utils/productUtils';
+import { shareProduct, toggleBookmark, isBookmarked } from '../utils/productUtils';
 import { addLike, getLikes } from '../utils/indexedDB';
 import { getUserIP } from '../utils/ipUtils';
 
 const ProductCard = ({ product, onUpdate }) => {
   const [likes, setLikes] = useState(product.likes || 0);
+  const [isBookmarkedState, setIsBookmarkedState] = useState(false);
 
   useEffect(() => {
     const fetchLikes = async () => {
@@ -14,6 +15,12 @@ const ProductCard = ({ product, onUpdate }) => {
       setLikes(likeCount);
     };
     fetchLikes();
+
+    const checkBookmarkStatus = async () => {
+      const bookmarked = await isBookmarked(product.id);
+      setIsBookmarkedState(bookmarked);
+    };
+    checkBookmarkStatus();
   }, [product.id]);
 
   const handleLike = async () => {
@@ -25,6 +32,12 @@ const ProductCard = ({ product, onUpdate }) => {
         if (onUpdate) onUpdate();
       }
     }
+  };
+
+  const handleBookmark = async () => {
+    const bookmarked = await toggleBookmark(product);
+    setIsBookmarkedState(bookmarked);
+    if (onUpdate) onUpdate();
   };
 
   return (
@@ -39,8 +52,8 @@ const ProductCard = ({ product, onUpdate }) => {
         <button onClick={() => shareProduct(product)} className="text-red-800 hover:text-red-600 transition-colors duration-300">
           <Share2 size={24} className="transform hover:scale-110" />
         </button>
-        <button onClick={() => toggleBookmark(product)} className="text-red-800 hover:text-red-600 transition-colors duration-300">
-          <Bookmark size={24} className="transform hover:scale-110 fill-current" />
+        <button onClick={handleBookmark} className="text-red-800 hover:text-red-600 transition-colors duration-300">
+          <Bookmark size={24} className={`transform hover:scale-110 ${isBookmarkedState ? 'fill-current' : ''}`} />
         </button>
         <button onClick={handleLike} className="text-red-800 hover:text-red-600 transition-colors duration-300 flex items-center">
           <Heart size={24} className="transform hover:scale-110 fill-current mr-1" />
