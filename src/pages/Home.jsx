@@ -1,64 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCurrentFlashSale, getFlashSaleSchedule, getSecondsUntilNextMidnight } from '../utils/flashSaleData';
+import { getCurrentFlashSale, getFlashSaleSchedule } from '../utils/flashSaleData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { getProducts } from '../utils/indexedDB';
 
-const CountdownTimer = ({ onTimerEnd }) => {
-  const [timeLeft, setTimeLeft] = useState(getSecondsUntilNextMidnight());
+const CountdownTimer = () => {
+  const [timeLeft, setTimeLeft] = useState({ hours: 12, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prevTime => {
-        if (prevTime <= 1) {
+        if (prevTime.hours === 0 && prevTime.minutes === 0 && prevTime.seconds === 0) {
           clearInterval(timer);
-          onTimerEnd();
-          return getSecondsUntilNextMidnight();
+          return prevTime;
         }
-        return prevTime - 1;
+        let newSeconds = prevTime.seconds - 1;
+        let newMinutes = prevTime.minutes;
+        let newHours = prevTime.hours;
+        if (newSeconds < 0) {
+          newSeconds = 59;
+          newMinutes -= 1;
+        }
+        if (newMinutes < 0) {
+          newMinutes = 59;
+          newHours -= 1;
+        }
+        return { hours: newHours, minutes: newMinutes, seconds: newSeconds };
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [onTimerEnd]);
+  }, []);
 
-  const formatTime = (time) => {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = time % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
+  const formatTime = (time) => time.toString().padStart(2, '0');
 
   return (
     <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600" style={{ direction: 'ltr' }}>
       <AnimatePresence mode="popLayout">
         <motion.span
-          key={`time-${timeLeft}`}
+          key={`hours-${timeLeft.hours}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
         >
-          {formatTime(timeLeft)}
+          {formatTime(timeLeft.hours)}
+        </motion.span>
+      </AnimatePresence>
+      <span className="text-4xl">:</span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={`minutes-${timeLeft.minutes}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {formatTime(timeLeft.minutes)}
+        </motion.span>
+      </AnimatePresence>
+      <span className="text-4xl">:</span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={`seconds-${timeLeft.seconds}`}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {formatTime(timeLeft.seconds)}
         </motion.span>
       </AnimatePresence>
     </div>
   );
 };
 
-const TopBanner = ({ onTimerEnd }) => {
-  const [currentSale, setCurrentSale] = useState(getCurrentFlashSale());
-
-  useEffect(() => {
-    setCurrentSale(getCurrentFlashSale());
-  }, []);
-
-  const handleTimerEnd = () => {
-    setCurrentSale(getCurrentFlashSale());
-    onTimerEnd();
-  };
-
+const TopBanner = () => {
+  const currentSale = getCurrentFlashSale();
   return (
     <motion.div
       initial={{ opacity: 0, y: -50 }}
@@ -69,7 +88,7 @@ const TopBanner = ({ onTimerEnd }) => {
       <h1 className="text-3xl font-bold mb-2">اليوم البيع</h1>
       <p className="text-xl">{currentSale.category}</p>
       <div className="mt-4">
-        <CountdownTimer onTimerEnd={handleTimerEnd} />
+        <CountdownTimer />
       </div>
     </motion.div>
   );
@@ -116,13 +135,9 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  const handleTimerEnd = () => {
-    fetchProducts();
-  };
-
   return (
     <div className="min-h-screen bg-red-50">
-      <TopBanner onTimerEnd={handleTimerEnd} />
+      <TopBanner />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CategoryNavigation />
         <h2 className="text-2xl font-bold mb-4 text-right text-red-800">منتجات اليوم</h2>

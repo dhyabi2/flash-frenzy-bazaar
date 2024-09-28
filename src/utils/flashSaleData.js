@@ -1,4 +1,4 @@
-import { format, addDays, setHours, setMinutes, setSeconds, differenceInSeconds } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
 const categories = [
@@ -11,13 +11,8 @@ const categories = [
   { en: 'Cosmetics', ar: 'مستحضرات تجميل' }
 ];
 
-const getGMT4Date = () => {
-  const now = new Date();
-  return new Date(now.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours for GMT+4
-};
-
 export const getFlashSaleSchedule = () => {
-  const today = getGMT4Date();
+  const today = new Date();
   return Array.from({ length: 7 }, (_, index) => {
     const date = addDays(today, index);
     const category = categories[index % categories.length];
@@ -32,17 +27,6 @@ export const getFlashSaleSchedule = () => {
 export const getCurrentFlashSale = () => {
   const schedule = getFlashSaleSchedule();
   return schedule[0];
-};
-
-export const getNextMidnight = () => {
-  const now = getGMT4Date();
-  return setSeconds(setMinutes(setHours(addDays(now, 1), 0), 0), 0);
-};
-
-export const getSecondsUntilNextMidnight = () => {
-  const now = getGMT4Date();
-  const nextMidnight = getNextMidnight();
-  return differenceInSeconds(nextMidnight, now);
 };
 
 export const getFlashSaleItems = () => {
