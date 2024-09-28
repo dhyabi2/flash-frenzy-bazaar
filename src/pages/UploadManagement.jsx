@@ -12,6 +12,7 @@ const UploadManagement = () => {
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImage, setProductImage] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [products, setProducts] = useState([]);
 
   const currentSale = getCurrentFlashSale();
@@ -32,6 +33,7 @@ const UploadManagement = () => {
       price: parseFloat(productPrice),
       image: productImage ? URL.createObjectURL(productImage) : null,
       category: currentSale.category,
+      phoneNumber: phoneNumber,
     };
 
     try {
@@ -44,6 +46,7 @@ const UploadManagement = () => {
       setProductDescription('');
       setProductPrice('');
       setProductImage(null);
+      setPhoneNumber('');
     } catch (error) {
       console.error('Error adding product:', error);
     }
@@ -87,6 +90,19 @@ const UploadManagement = () => {
                 required
               />
             </div>
+          </div>
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="phoneNumber">
+              رقم الهاتف
+            </label>
+            <Input
+              id="phoneNumber"
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
+              required
+            />
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productDescription">
@@ -155,6 +171,7 @@ const UploadManagement = () => {
               <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
               <p className="text-gray-600 mb-2">{product.description}</p>
               <p className="text-red-600 font-bold">{product.price} ريال</p>
+              <p className="text-gray-600">رقم الهاتف: {product.phoneNumber}</p>
             </div>
           ))}
         </div>
