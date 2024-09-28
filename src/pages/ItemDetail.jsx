@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ShoppingCart, Bookmark, Share2, Heart } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Bookmark, Share2, Heart, Phone } from 'lucide-react';
 import { fetchProducts, addLike, getLikes } from '../utils/api';
 import { shareProduct } from '../utils/productUtils';
 import { Button } from "@/components/ui/button";
@@ -116,9 +116,9 @@ const ItemDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-elegant-light p-4 sm:p-6 md:p-8">
-      <div className="container mx-auto max-w-6xl">
-        <Link to="/" className="inline-flex items-center text-deal hover:text-deal-dark transition-colors mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-elegant-light to-white">
+      <div className="container mx-auto px-4 py-8">
+        <Link to="/" className="inline-flex items-center text-deal hover:text-deal-dark transition-colors mb-8">
           <ArrowLeft size={20} className="ml-2" />
           العودة إلى البيع الفلاشي
         </Link>
@@ -126,33 +126,30 @@ const ItemDetail = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white p-6 rounded-2xl shadow-xl"
+          className="bg-white rounded-3xl shadow-2xl overflow-hidden"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="relative aspect-square overflow-hidden rounded-xl"
-            >
-              <img
-                src={getImageUrl()}
-                alt={item.name}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex flex-col justify-between"
-            >
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-1/2">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="relative aspect-square"
+              >
+                <img
+                  src={getImageUrl()}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
+            <div className="md:w-1/2 p-8 flex flex-col justify-between">
               <div>
                 <h1 className="text-4xl font-bold mb-4 text-right text-deal-dark">{item.name}</h1>
                 <p className="text-3xl font-semibold text-deal mb-6 text-right">{formattedPrice} ريال</p>
-                <p className="text-elegant-dark mb-6 text-right text-lg">{item.description}</p>
+                <p className="text-elegant-dark mb-6 text-right text-lg leading-relaxed">{item.description}</p>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -178,7 +175,7 @@ const ItemDetail = () => {
                     onClick={handleLike}
                     className="flex items-center text-elegant-dark hover:text-deal transition-colors duration-300"
                   >
-                    <Heart className="mr-2" />
+                    <Heart className={`mr-2 ${likes > 0 ? 'fill-current text-deal' : ''}`} />
                     {likes}
                   </motion.button>
                 </div>
@@ -188,11 +185,11 @@ const ItemDetail = () => {
                   href={`tel:${item.phoneNumber}`}
                   className="w-full bg-deal text-white px-6 py-4 rounded-full hover:bg-deal-dark transition-colors duration-300 flex items-center justify-center text-xl font-semibold"
                 >
-                  <ShoppingCart className="ml-2" size={24} />
+                  <Phone className="ml-2" size={24} />
                   اتصل الآن
                 </motion.a>
               </div>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>
