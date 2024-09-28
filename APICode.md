@@ -3,6 +3,8 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const cors = require('cors');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,12 +13,27 @@ app.use(cors());
 app.use(express.json());
 
 const DATA_DIR = path.join(__dirname, 'data');
+const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const BOOKMARKS_FILE = path.join(DATA_DIR, 'bookmarks.json');
 const LIKES_FILE = path.join(DATA_DIR, 'likes.json');
 
-// Ensure data directory exists
+// Ensure data and uploads directories exist
 fs.mkdir(DATA_DIR, { recursive: true }).catch(console.error);
+fs.mkdir(UPLOADS_DIR, { recursive: true }).catch(console.error);
+
+// Configure multer for handling file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, UPLOADS_DIR);
+  },
+  filename: (req, file, cb) => {
+    const uniqueFilename = `${uuidv4()}${path.extname(file.originalname)}`;
+    cb(null, uniqueFilename);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Helper function to read JSON file
 async function readJsonFile(filePath) {
@@ -46,8 +63,8 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// Add a new product
-app.post('/api/products', async (req, res) => {
+// Add a new product with image upload
+app.post('/api/products', upload.single('image'), async (req, res) => {
   try {
     const products = await readJsonFile(PRODUCTS_FILE);
     const newProduct = {
@@ -55,6 +72,11 @@ app.post('/api/products', async (req, res) => {
       ...req.body,
       likes: 0
     };
+
+    if (req.file) {
+      newProduct.image = `/uploads/${req.file.filename}`;
+    }
+
     products.push(newProduct);
     await writeJsonFile(PRODUCTS_FILE, products);
     res.status(201).json(newProduct);
@@ -147,6 +169,9 @@ app.get('/api/likes/:productId', async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve likes' });
   }
 });
+
+// Serve uploaded images
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
