@@ -61,7 +61,9 @@ const Home = () => {
   const fetchProductsData = async () => {
     try {
       const fetchedProducts = await fetchProducts();
-      const filteredProducts = fetchedProducts.filter(product => product.category === currentSale.categoryEn);
+      console.log('Fetched products:', fetchedProducts); // Add this line for debugging
+      const filteredProducts = fetchedProducts.filter(product => product.category === currentSale.category);
+      console.log('Filtered products:', filteredProducts); // Add this line for debugging
       setProducts(filteredProducts.sort((a, b) => (b.likes || 0) - (a.likes || 0)));
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -70,7 +72,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchProductsData();
-  }, [currentSale.categoryEn]);
+  }, [currentSale.category]);
 
   return (
     <div className="min-h-screen bg-red-50">
@@ -78,7 +80,11 @@ const Home = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CategoryNavigation />
         <h2 className="text-2xl font-bold mb-4 text-right text-red-800">منتجات اليوم</h2>
-        <FlashSaleSection products={products} onUpdate={fetchProductsData} />
+        {products.length > 0 ? (
+          <FlashSaleSection products={products} onUpdate={fetchProductsData} />
+        ) : (
+          <p className="text-center text-gray-600">لا توجد منتجات متاحة حاليًا.</p>
+        )}
         <Link to="/schedule" className="block mt-8 text-red-600 hover:text-red-800 transition-colors duration-300">
           <div className="flex items-center justify-center">
             <ChevronRight size={20} />
