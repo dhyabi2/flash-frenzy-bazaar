@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
   const navItems = [
     { path: '/', icon: Home },
     { path: '/upload', icon: Plus },
-    { path: '/bookmark', icon: BookmarkPlus },
+    { path: '/bookmarks', icon: BookmarkPlus },
     { path: '/faq', icon: HelpCircle },
   ];
 
