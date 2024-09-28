@@ -90,6 +90,11 @@ const ItemDetail = () => {
     );
   }
 
+  // Ensure price is a number and format it
+  const formattedPrice = typeof item.price === 'number' 
+    ? item.price.toFixed(2) 
+    : parseFloat(item.price || 0).toFixed(2);
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="container mx-auto max-w-4xl">
@@ -112,7 +117,7 @@ const ItemDetail = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <h1 className="text-3xl font-bold mb-4 text-right">{item.name}</h1>
-            <p className="text-2xl font-semibold text-blue-600 mb-6 text-right">{item.price.toFixed(2)} ريال</p>
+            <p className="text-2xl font-semibold text-blue-600 mb-6 text-right">{formattedPrice} ريال</p>
             <p className="text-gray-700 mb-6 text-right">{item.description}</p>
             <div className="flex justify-between items-center mb-6">
               <button onClick={handleBookmark} className="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
@@ -125,7 +130,6 @@ const ItemDetail = () => {
               </button>
             </div>
             <a href={`tel:${item.phoneNumber}`} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center">
-              
               <ShoppingCart className="ml-2" />
               اتصل الآن
             </a>
