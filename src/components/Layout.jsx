@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
     <div className="flex flex-col min-h-screen bg-elegant-light">
       {/* Top Navigation Bar */}
       <header className="bg-deal-dark text-white p-4 text-center shadow-lg">
-        <h1 className="text-2xl font-bold">كل يوم</h1>
+        <h1 className="text-2xl font-bold">سوق كل يوم🇴🇲</h1>
       </header>
 
       <main className="flex-grow w-full">{children}</main>
