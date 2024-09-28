@@ -53,10 +53,25 @@ const ProductCard = ({ product, onUpdate }) => {
     setImageError(true);
   };
 
+  // Function to get the correct image URL
+  const getImageUrl = () => {
+    if (product.image.startsWith('blob:')) {
+      // If it's a blob URL, we can't use it directly in production
+      // For now, we'll use a placeholder image
+      return '/placeholder.svg';
+    } else if (product.image.startsWith('http')) {
+      // If it's already a full URL, use it as is
+      return product.image;
+    } else {
+      // If it's a relative path, prepend the API base URL
+      return `https://kul-yoom.replit.app${product.image}`;
+    }
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
       <img 
-        src={imageError ? '/placeholder.svg' : product.image} 
+        src={imageError ? '/placeholder.svg' : getImageUrl()}
         alt={product.name} 
         className="w-full h-48 object-cover mb-4 rounded-md"
         onError={handleImageError}
