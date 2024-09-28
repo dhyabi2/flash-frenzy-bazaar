@@ -1,4 +1,4 @@
-import { addBookmark, removeBookmark, getBookmarks as getBookmarksFromDB } from './indexedDB';
+import { addBookmark, removeBookmark, fetchBookmarks } from './api';
 
 export const shareProduct = (product) => {
   if (navigator.share) {
@@ -18,7 +18,7 @@ export const shareProduct = (product) => {
 
 export const toggleBookmark = async (product) => {
   try {
-    const bookmarks = await getBookmarksFromDB();
+    const bookmarks = await fetchBookmarks();
     const isBookmarked = bookmarks.some(bookmark => bookmark.id === product.id);
     
     if (isBookmarked) {
@@ -36,7 +36,7 @@ export const toggleBookmark = async (product) => {
 
 export const isBookmarked = async (productId) => {
   try {
-    const bookmarks = await getBookmarksFromDB();
+    const bookmarks = await fetchBookmarks();
     return bookmarks.some(bookmark => bookmark.id === productId);
   } catch (error) {
     console.error('Error checking bookmark status:', error);
@@ -44,4 +44,4 @@ export const isBookmarked = async (productId) => {
   }
 };
 
-export const getBookmarks = getBookmarksFromDB;
+export const getBookmarks = fetchBookmarks;
