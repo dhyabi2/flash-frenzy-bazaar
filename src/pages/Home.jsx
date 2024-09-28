@@ -35,7 +35,7 @@ const CountdownTimer = () => {
   const formatTime = (time) => time.toString().padStart(2, '0');
 
   return (
-    <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600">
+    <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600 direction-ltr">
       <AnimatePresence mode="popLayout">
         <motion.span key={timeLeft.hours} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} transition={{ duration: 0.3 }}>
           {formatTime(timeLeft.hours)}
