@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getCurrentFlashSale, getFlashSaleItems, getFlashSaleSchedule } from '../utils/flashSaleData';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Clock, ChevronRight, Phone, Share2, Bookmark } from 'lucide-react';
 import { shareProduct, toggleBookmark } from '../utils/productUtils';
 
@@ -36,15 +36,46 @@ const CountdownTimer = () => {
 
   return (
     <div className="flex items-center justify-center space-x-2 text-6xl font-bold text-red-600 direction-ltr">
-      <span>{formatTime(timeLeft.seconds)}</span>
-      <span className="text-4xl">:</span>
-      <span>{formatTime(timeLeft.minutes)}</span>
-      <span className="text-4xl">:</span>
-      <span>{formatTime(timeLeft.hours)}</span>
+      <motion.span
+        key={timeLeft.hours}
+        initial={{ scale: 1 }}
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 0.5 }}
+      >
+        {formatTime(timeLeft.hours)}
+      </motion.span>
+      <motion.span
+        animate={{ opacity: [1, 0.5, 1] }}
+        transition={{ duration: 1, repeat: Infinity }}
+        className="text-4xl"
+      >
+        :
+      </motion.span>
+      <motion.span
+        key={timeLeft.minutes}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {formatTime(timeLeft.minutes)}
+      </motion.span>
+      <motion.span
+        animate={{ opacity: [1, 0.5, 1] }}
+        transition={{ duration: 1, repeat: Infinity }}
+        className="text-4xl"
+      >
+        :
+      </motion.span>
+      <motion.span
+        key={timeLeft.seconds}
+        animate={{ rotate: [0, 360] }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatType: "loop" }}
+      >
+        {formatTime(timeLeft.seconds)}
+      </motion.span>
     </div>
   );
 };
-
 
 const TopBanner = () => {
   const currentSale = getCurrentFlashSale();
