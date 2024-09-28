@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getCurrentFlashSale } from '../utils/flashSaleData';
 import { motion } from 'framer-motion';
-import { Upload, X, Camera } from 'lucide-react';
+import { Upload, Camera } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { addProduct, fetchProducts } from '../utils/api';
+import { addProduct } from '../utils/api';
+import { toast } from 'sonner';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const UploadManagement = () => {
   const [productName, setProductName] = useState('');
@@ -13,22 +23,12 @@ const UploadManagement = () => {
   const [productPrice, setProductPrice] = useState('');
   const [productImage, setProductImage] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [products, setProducts] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [isError, setIsError] = useState(false);
 
+  const navigate = useNavigate();
   const currentSale = getCurrentFlashSale();
-
-  useEffect(() => {
-    fetchProductsData();
-  }, []);
-
-  const fetchProductsData = async () => {
-    try {
-      const fetchedProducts = await fetchProducts();
-      setProducts(fetchedProducts);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,16 +44,21 @@ const UploadManagement = () => {
 
     try {
       await addProduct(formData);
-      await fetchProductsData();
-      
-      // Reset form after submission
-      setProductName('');
-      setProductDescription('');
-      setProductPrice('');
-      setProductImage(null);
-      setPhoneNumber('');
+      setDialogMessage('تم رفع المنتج بنجاح');
+      setIsError(false);
+      setIsDialogOpen(true);
     } catch (error) {
       console.error('Error adding product:', error);
+      setDialogMessage('حدث خطأ أثناء رفع المنتج. يرجى المحاولة مرة أخرى.');
+      setIsError(true);
+      setIsDialogOpen(true);
+    }
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    if (!isError) {
+      navigate('/');
     }
   };
 
@@ -65,7 +70,7 @@ const UploadManagement = () => {
         transition={{ duration: 0.5 }}
         className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl max-w-5xl mx-auto mb-16"
       >
-        <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-right text-red-800">رفع منتج لبيع اليوم الفلاشي</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-right text-red-800">رفع منتج لبيع اليوم</h1>
         <p className="mb-8 text-lg sm:text-xl text-gray-600 text-right">الفئة: <span className="font-semibold text-red-600">{currentSale.category}</span></p>
         <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -165,22 +170,18 @@ const UploadManagement = () => {
           </Button>
         </form>
       </motion.div>
-      
-      {/* Display uploaded products */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4 text-right text-red-800">المنتجات المرفوعة</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <div key={product.id} className="bg-white p-4 rounded-lg shadow">
-              {product.image && <img src={`https://kul-yoom.replit.app${product.image}`} alt={product.name} className="w-full h-48 object-cover mb-4 rounded" />}
-              <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-              <p className="text-gray-600 mb-2">{product.description}</p>
-              <p className="text-red-600 font-bold">{product.price} ريال</p>
-              <p className="text-gray-600">رقم الهاتف: {product.phoneNumber}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{isError ? 'خطأ' : 'تم بنجاح'}</DialogTitle>
+            <DialogDescription>{dialogMessage}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={handleDialogClose}>موافق</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
