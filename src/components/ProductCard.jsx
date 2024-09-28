@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Share2, Bookmark, Heart } from 'lucide-react';
 import { shareProduct } from '../utils/productUtils';
@@ -54,14 +54,11 @@ const ProductCard = ({ product, onUpdate }) => {
   };
 
   const getImageUrl = () => {
-    if (product.image.startsWith('blob:')) {
-      // For blob URLs, use a placeholder image
+    if (product.image.startsWith('blob:') || imageError) {
       return '/placeholder.svg';
     } else if (product.image.startsWith('http')) {
-      // If it's already a full URL, use it as is
       return product.image;
     } else {
-      // If it's a relative path, prepend the API base URL
       return `https://kul-yoom.replit.app${product.image}`;
     }
   };
@@ -69,7 +66,7 @@ const ProductCard = ({ product, onUpdate }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
       <img 
-        src={imageError ? '/placeholder.svg' : getImageUrl()}
+        src={getImageUrl()}
         alt={product.name} 
         className="w-full h-48 object-cover mb-4 rounded-md"
         onError={handleImageError}
