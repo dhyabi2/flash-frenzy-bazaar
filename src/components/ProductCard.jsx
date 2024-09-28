@@ -53,11 +53,11 @@ const ProductCard = ({ product, onUpdate }) => {
     setImageError(true);
   };
 
-  // Function to get the correct image URL
+  // Updated function to handle blob URLs
   const getImageUrl = () => {
     if (product.image.startsWith('blob:')) {
-      // If it's a blob URL, we can't use it directly in production
-      // For now, we'll use a placeholder image
+      // For blob URLs, we can't use them directly in production
+      // Instead, we'll use a placeholder image
       return '/placeholder.svg';
     } else if (product.image.startsWith('http')) {
       // If it's already a full URL, use it as is
