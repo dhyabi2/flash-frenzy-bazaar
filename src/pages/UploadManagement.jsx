@@ -32,17 +32,18 @@ const UploadManagement = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newProduct = {
-      name: productName,
-      description: productDescription,
-      price: parseFloat(productPrice),
-      image: productImage ? URL.createObjectURL(productImage) : null,
-      category: currentSale.category,
-      phoneNumber: phoneNumber,
-    };
+    const formData = new FormData();
+    formData.append('name', productName);
+    formData.append('description', productDescription);
+    formData.append('price', productPrice);
+    formData.append('category', currentSale.category);
+    formData.append('phoneNumber', phoneNumber);
+    if (productImage) {
+      formData.append('image', productImage);
+    }
 
     try {
-      await addProduct(newProduct);
+      await addProduct(formData);
       await fetchProductsData();
       
       // Reset form after submission
@@ -171,7 +172,7 @@ const UploadManagement = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.map((product) => (
             <div key={product.id} className="bg-white p-4 rounded-lg shadow">
-              {product.image && <img src={product.image} alt={product.name} className="w-full h-48 object-cover mb-4 rounded" />}
+              {product.image && <img src={`https://kul-yoom.replit.app${product.image}`} alt={product.name} className="w-full h-48 object-cover mb-4 rounded" />}
               <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
               <p className="text-gray-600 mb-2">{product.description}</p>
               <p className="text-red-600 font-bold">{product.price} ريال</p>

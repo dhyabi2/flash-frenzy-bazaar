@@ -6,11 +6,10 @@ export const fetchProducts = async () => {
   return response.json();
 };
 
-export const addProduct = async (product) => {
+export const addProduct = async (formData) => {
   const response = await fetch(`${API_BASE_URL}/api/products`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(product),
+    body: formData,
   });
   if (!response.ok) throw new Error('Failed to add product');
   return response.json();
