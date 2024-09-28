@@ -8,6 +8,7 @@ import { getUserIP } from '../utils/ipUtils';
 const ProductCard = ({ product, onUpdate }) => {
   const [likes, setLikes] = useState(product.likes || 0);
   const [isBookmarkedState, setIsBookmarkedState] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const fetchLikes = async () => {
@@ -40,9 +41,18 @@ const ProductCard = ({ product, onUpdate }) => {
     if (onUpdate) onUpdate();
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
-      <img src={product.image} alt={product.name} className="w-full h-48 object-cover mb-4 rounded-md" />
+      <img 
+        src={imageError ? '/placeholder.svg' : product.image} 
+        alt={product.name} 
+        className="w-full h-48 object-cover mb-4 rounded-md"
+        onError={handleImageError}
+      />
       <h3 className="font-bold text-lg mb-2 text-right">{product.name}</h3>
       <p className="text-2xl font-semibold text-red-600 mb-4 text-right">{product.price.toFixed(2)} ريال</p>
       <div className="flex justify-between items-center mb-4">
