@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getTimeUntilNextDay } from '../utils/flashSaleData';
+
+// Function to calculate time until midnight in Oman (UTC+4)
+const getTimeUntilNextDay = () => {
+  const now = new Date();
+
+  // Get current time in milliseconds and adjust for UTC+4 (Oman timezone)
+  const currentUTCOffset = now.getTimezoneOffset() * 60000; // in milliseconds
+  const omanTimeOffset = 4 * 60 * 60000; // UTC+4 in milliseconds
+  const omanNow = new Date(now.getTime() + currentUTCOffset + omanTimeOffset);
+
+  // Set the next day to midnight (00:00 AM) of the next day in Oman time
+  const nextDay = new Date(omanNow);
+  nextDay.setHours(24, 0, 0, 0); // Set to 24:00:00.000 for next midnight
+
+  // Calculate the remaining time in seconds
+  return Math.floor((nextDay - omanNow) / 1000);
+};
 
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState(getTimeUntilNextDay());
