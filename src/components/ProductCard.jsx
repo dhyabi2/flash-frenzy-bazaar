@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Share2, Bookmark, Heart } from 'lucide-react';
-import { shareProduct, toggleBookmark, isBookmarked } from '../utils/productUtils';
-import { addLike, getLikes } from '../utils/indexedDB';
-import { getUserIP } from '../utils/ipUtils';
+import { shareProduct } from '../utils/productUtils';
+import { addLike, getLikes, addBookmark, removeBookmark } from '../utils/api';
 
 const ProductCard = ({ product, onUpdate }) => {
   const [likes, setLikes] = useState(product.likes || 0);
@@ -12,33 +11,42 @@ const ProductCard = ({ product, onUpdate }) => {
 
   useEffect(() => {
     const fetchLikes = async () => {
-      const likeCount = await getLikes(product.id);
-      setLikes(likeCount);
+      try {
+        const { count } = await getLikes(product.id);
+        setLikes(count);
+      } catch (error) {
+        console.error('Error fetching likes:', error);
+      }
     };
     fetchLikes();
 
-    const checkBookmarkStatus = async () => {
-      const bookmarked = await isBookmarked(product.id);
-      setIsBookmarkedState(bookmarked);
-    };
-    checkBookmarkStatus();
+    // Check if the product is bookmarked
+    // This would require a new API endpoint, for now we'll assume it's not bookmarked
+    setIsBookmarkedState(false);
   }, [product.id]);
 
   const handleLike = async () => {
-    const ip = await getUserIP();
-    if (ip) {
-      const liked = await addLike(product.id, ip);
-      if (liked) {
-        setLikes(prevLikes => prevLikes + 1);
-        if (onUpdate) onUpdate();
-      }
+    try {
+      await addLike(product.id);
+      setLikes(prevLikes => prevLikes + 1);
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error('Error adding like:', error);
     }
   };
 
   const handleBookmark = async () => {
-    const bookmarked = await toggleBookmark(product);
-    setIsBookmarkedState(bookmarked);
-    if (onUpdate) onUpdate();
+    try {
+      if (isBookmarkedState) {
+        await removeBookmark(product.id);
+      } else {
+        await addBookmark(product);
+      }
+      setIsBookmarkedState(!isBookmarkedState);
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error('Error toggling bookmark:', error);
+    }
   };
 
   const handleImageError = () => {

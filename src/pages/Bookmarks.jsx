@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getBookmarks } from '../utils/productUtils';
+import { fetchBookmarks } from '../utils/api';
 import { motion } from 'framer-motion';
 import { Bookmark, ArrowLeft } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
@@ -9,16 +9,16 @@ const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(() => {
-    const fetchBookmarks = async () => {
-      const fetchedBookmarks = await getBookmarks();
-      setBookmarks(fetchedBookmarks);
-    };
-    fetchBookmarks();
+    fetchBookmarksData();
   }, []);
 
-  const handleUpdate = async () => {
-    const updatedBookmarks = await getBookmarks();
-    setBookmarks(updatedBookmarks);
+  const fetchBookmarksData = async () => {
+    try {
+      const fetchedBookmarks = await fetchBookmarks();
+      setBookmarks(fetchedBookmarks);
+    } catch (error) {
+      console.error('Error fetching bookmarks:', error);
+    }
   };
 
   return (
@@ -34,7 +34,7 @@ const Bookmarks = () => {
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {bookmarks.map((product) => (
-            <ProductCard key={product.id} product={product} onUpdate={handleUpdate} />
+            <ProductCard key={product.id} product={product} onUpdate={fetchBookmarksData} />
           ))}
         </div>
         {bookmarks.length === 0 && (

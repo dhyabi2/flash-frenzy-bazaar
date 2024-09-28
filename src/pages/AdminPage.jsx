@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts, deleteProduct } from '../utils/indexedDB';
+import { fetchProducts, deleteProduct } from '../utils/api';
 import { toast } from 'sonner';
 
 const AdminPage = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetchProducts();
+    fetchProductsData();
   }, []);
 
-  const fetchProducts = async () => {
-    const fetchedProducts = await getProducts();
-    setProducts(fetchedProducts);
+  const fetchProductsData = async () => {
+    try {
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      toast.error('حدث خطأ أثناء جلب المنتجات');
+    }
   };
 
   const handleDeleteProduct = async (productId) => {
     try {
       await deleteProduct(productId);
       toast.success('تم حذف المنتج بنجاح');
-      fetchProducts(); // Refresh the product list
+      fetchProductsData(); // Refresh the product list
     } catch (error) {
       toast.error('حدث خطأ أثناء حذف المنتج');
       console.error('Error deleting product:', error);

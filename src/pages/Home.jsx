@@ -4,7 +4,7 @@ import { getCurrentFlashSale, getFlashSaleSchedule } from '../utils/flashSaleDat
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { getProducts } from '../utils/indexedDB';
+import { fetchProducts } from '../utils/api';
 import CountdownTimer from '../components/CountdownTimer';
 
 const TopBanner = () => {
@@ -58,14 +58,18 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const currentSale = getCurrentFlashSale();
 
-  const fetchProducts = async () => {
-    const fetchedProducts = await getProducts();
-    const filteredProducts = fetchedProducts.filter(product => product.category === currentSale.categoryEn);
-    setProducts(filteredProducts.sort((a, b) => (b.likes || 0) - (a.likes || 0)));
+  const fetchProductsData = async () => {
+    try {
+      const fetchedProducts = await fetchProducts();
+      const filteredProducts = fetchedProducts.filter(product => product.category === currentSale.categoryEn);
+      setProducts(filteredProducts.sort((a, b) => (b.likes || 0) - (a.likes || 0)));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchProductsData();
   }, [currentSale.categoryEn]);
 
   return (
@@ -74,7 +78,7 @@ const Home = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CategoryNavigation />
         <h2 className="text-2xl font-bold mb-4 text-right text-red-800">منتجات اليوم</h2>
-        <FlashSaleSection products={products} onUpdate={fetchProducts} />
+        <FlashSaleSection products={products} onUpdate={fetchProductsData} />
         <Link to="/schedule" className="block mt-8 text-red-600 hover:text-red-800 transition-colors duration-300">
           <div className="flex items-center justify-center">
             <ChevronRight size={20} />

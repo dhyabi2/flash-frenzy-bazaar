@@ -5,7 +5,7 @@ import { Upload, X, Camera } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { addProduct, getProducts } from '../utils/indexedDB';
+import { addProduct, fetchProducts } from '../utils/api';
 
 const UploadManagement = () => {
   const [productName, setProductName] = useState('');
@@ -18,12 +18,17 @@ const UploadManagement = () => {
   const currentSale = getCurrentFlashSale();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const fetchedProducts = await getProducts();
-      setProducts(fetchedProducts);
-    };
-    fetchProducts();
+    fetchProductsData();
   }, []);
+
+  const fetchProductsData = async () => {
+    try {
+      const fetchedProducts = await fetchProducts();
+      setProducts(fetchedProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,8 +43,7 @@ const UploadManagement = () => {
 
     try {
       await addProduct(newProduct);
-      const updatedProducts = await getProducts();
-      setProducts(updatedProducts);
+      await fetchProductsData();
       
       // Reset form after submission
       setProductName('');

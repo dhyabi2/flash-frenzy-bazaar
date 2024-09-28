@@ -2,23 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ShoppingCart, Bookmark, Share2 } from 'lucide-react';
-import { getProducts } from '../utils/indexedDB';
-import { toggleBookmark, shareProduct } from '../utils/productUtils';
+import { fetchProducts } from '../utils/api';
+import { shareProduct } from '../utils/productUtils';
+import { addBookmark, removeBookmark } from '../utils/api';
 
 const ItemDetail = () => {
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setIsLoading(true);
-        const products = await getProducts();
+        const products = await fetchProducts();
         const foundItem = products.find(product => product.id === parseInt(id));
         if (foundItem) {
           setItem(foundItem);
+          // Here you would typically check if the item is bookmarked
+          // For now, we'll assume it's not bookmarked
+          setIsBookmarked(false);
         } else {
           setError('المنتج غير موجود');
         }
@@ -35,9 +40,17 @@ const ItemDetail = () => {
 
   const handleBookmark = async () => {
     if (item) {
-      const isBookmarked = await toggleBookmark(item);
-      // You might want to update the UI to reflect the new bookmark state
-      console.log(isBookmarked ? 'تمت إضافة المنتج إلى المفضلة' : 'تمت إزالة المنتج من المفضلة');
+      try {
+        if (isBookmarked) {
+          await removeBookmark(item.id);
+          setIsBookmarked(false);
+        } else {
+          await addBookmark(item);
+          setIsBookmarked(true);
+        }
+      } catch (error) {
+        console.error('Error toggling bookmark:', error);
+      }
     }
   };
 
@@ -103,8 +116,8 @@ const ItemDetail = () => {
             <p className="text-gray-700 mb-6 text-right">{item.description}</p>
             <div className="flex justify-between items-center mb-6">
               <button onClick={handleBookmark} className="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
-                <Bookmark className="mr-2" />
-                حفظ
+                <Bookmark className={`mr-2 ${isBookmarked ? 'fill-current text-blue-500' : ''}`} />
+                {isBookmarked ? 'تمت الإضافة للمفضلة' : 'إضافة للمفضلة'}
               </button>
               <button onClick={handleShare} className="flex items-center text-gray-600 hover:text-green-500 transition-colors duration-300">
                 <Share2 className="mr-2" />
@@ -112,6 +125,7 @@ const ItemDetail = () => {
               </button>
             </div>
             <a href={`tel:${item.phoneNumber}`} className="w-full bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center">
+              
               <ShoppingCart className="ml-2" />
               اتصل الآن
             </a>
