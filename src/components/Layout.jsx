@@ -13,16 +13,16 @@ const Layout = ({ children }) => {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-elegant-light">
       {/* Top Navigation Bar */}
-      <header className="bg-blue-500 text-white p-4 text-center">
+      <header className="bg-deal-dark text-white p-4 text-center shadow-lg">
         <h1 className="text-2xl font-bold">كل يوم</h1>
       </header>
 
       <main className="flex-grow w-full">{children}</main>
 
       {/* Bottom Navigation Bar */}
-      <nav className="bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0">
+      <nav className="bg-white border-t border-elegant-dark fixed bottom-0 left-0 right-0 shadow-lg">
         <div className="max-w-screen-xl mx-auto px-4">
           <div className="flex justify-around">
             {navItems.map((item) => (
@@ -31,8 +31,8 @@ const Layout = ({ children }) => {
                 to={item.path}
                 className={`flex items-center py-4 px-3 ${
                   location.pathname === item.path
-                    ? 'text-blue-500'
-                    : 'text-gray-500 hover:text-blue-500'
+                    ? 'text-deal-dark'
+                    : 'text-elegant-dark hover:text-deal transition-colors'
                 }`}
               >
                 <item.icon className="h-6 w-6" />

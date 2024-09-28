@@ -12,9 +12,9 @@ const TopBanner = () => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-gradient-to-r from-blue-600 to-blue-400 text-white p-6 rounded-b-lg shadow-lg text-right"
+      className="bg-gradient-to-r from-deal-dark to-deal text-white p-6 rounded-b-lg shadow-lg text-right"
     >
-      <h1 className="text-3xl font-bold mb-2">البيع الفلاشي اليوم</h1>
+      <h1 className="text-3xl font-bold mb-2">كل يوم</h1>
       <p className="text-xl">{currentSale.category}</p>
       <div className="flex items-center mt-4 justify-end">
         <span>ينتهي في 12:34:56</span>
@@ -27,13 +27,13 @@ const TopBanner = () => {
 const CategoryNavigation = () => {
   const schedule = getFlashSaleSchedule();
   return (
-    <div className="overflow-x-auto whitespace-nowrap p-4 bg-gray-100 rounded-lg my-4">
+    <div className="overflow-x-auto whitespace-nowrap p-4 bg-elegant rounded-lg my-4 shadow-inner">
       {schedule.map((day, index) => (
         <Link
           key={day.date}
           to={index === 0 ? '/' : '#'}
           className={`inline-block px-4 py-2 ml-2 rounded-full ${
-            index === 0 ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 border border-gray-300'
+            index === 0 ? 'bg-deal text-white' : 'bg-white text-elegant-dark border border-elegant'
           } transition-all duration-300 hover:shadow-md`}
         >
           {day.date}: {day.category}
@@ -50,21 +50,21 @@ const ProductCard = ({ product }) => (
   >
     <img src={product.image} alt={product.name} className="w-full h-48 object-cover mb-4 rounded-md" />
     <h3 className="font-bold text-lg mb-2 text-right">{product.name}</h3>
-    <p className="text-2xl font-semibold text-blue-600 mb-4 text-right">{product.price.toFixed(2)} ريال</p>
+    <p className="text-2xl font-semibold text-deal-dark mb-4 text-right">{product.price.toFixed(2)} ريال</p>
     <div className="flex justify-between items-center mb-4">
-      <button onClick={() => window.location.href = `tel:+1234567890`} className="text-gray-600 hover:text-blue-500 transition-colors duration-300">
+      <button onClick={() => window.location.href = `tel:+1234567890`} className="text-elegant-dark hover:text-deal transition-colors duration-300">
         <Phone size={24} className="transform hover:scale-110" />
       </button>
-      <button onClick={() => shareProduct(product)} className="text-gray-600 hover:text-green-500 transition-colors duration-300">
+      <button onClick={() => shareProduct(product)} className="text-elegant-dark hover:text-deal transition-colors duration-300">
         <Share2 size={24} className="transform hover:scale-110" />
       </button>
-      <button onClick={() => toggleBookmark(product)} className="text-gray-600 hover:text-yellow-500 transition-colors duration-300">
+      <button onClick={() => toggleBookmark(product)} className="text-elegant-dark hover:text-deal transition-colors duration-300">
         <Bookmark size={24} className="transform hover:scale-110" />
       </button>
     </div>
     <Link
       to={`/item/${product.id}`}
-      className="block w-full bg-blue-500 text-white text-center px-4 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300"
+      className="block w-full bg-deal text-white text-center px-4 py-2 rounded-full hover:bg-deal-dark transition-colors duration-300"
     >
       عرض التفاصيل
     </Link>
@@ -84,13 +84,13 @@ const FlashSaleSection = () => {
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-elegant-light">
       <TopBanner />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <CategoryNavigation />
-        <h2 className="text-2xl font-bold mb-4 text-right">منتجات اليوم</h2>
+        <h2 className="text-2xl font-bold mb-4 text-right text-elegant-dark">منتجات اليوم</h2>
         <FlashSaleSection />
-        <Link to="/schedule" className="block mt-8 text-blue-500 hover:text-blue-600 transition-colors duration-300">
+        <Link to="/schedule" className="block mt-8 text-deal hover:text-deal-dark transition-colors duration-300">
           <div className="flex items-center justify-center">
             <ChevronRight size={20} />
             <span className="mr-2">عرض الجدول الكامل</span>
