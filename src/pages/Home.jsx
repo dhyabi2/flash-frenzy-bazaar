@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { getCurrentFlashSale } from '../utils/flashSaleData';
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { fetchProducts } from '../utils/api';
 import CountdownTimer from '../components/CountdownTimer';
@@ -36,10 +34,10 @@ const FlashSaleSection = ({ products, onUpdate }) => {
 };
 
 const dummyProducts = [
-  { id: 1, name: 'منتج تجريبي 1', price: 99.99, image: '/placeholder.svg', category: 'عام' },
-  { id: 2, name: 'منتج تجريبي 2', price: 149.99, image: '/placeholder.svg', category: 'عام' },
-  { id: 3, name: 'منتج تجريبي 3', price: 79.99, image: '/placeholder.svg', category: 'عام' },
-  { id: 4, name: 'منتج تجريبي 4', price: 199.99, image: '/placeholder.svg', category: 'عام' },
+  { id: 1, name: 'حقيبة يد فاخرة', price: 129.99, image: 'https://picsum.photos/seed/bag1/300/300', category: 'حقائب' },
+  { id: 2, name: 'حذاء رياضي أنيق', price: 89.99, image: 'https://picsum.photos/seed/shoe1/300/300', category: 'أحذية' },
+  { id: 3, name: 'ساعة يد كلاسيكية', price: 199.99, image: 'https://picsum.photos/seed/watch1/300/300', category: 'إكسسوارات' },
+  { id: 4, name: 'نظارة شمسية عصرية', price: 79.99, image: 'https://picsum.photos/seed/sunglasses1/300/300', category: 'إكسسوارات' },
 ];
 
 const Home = () => {
@@ -71,12 +69,6 @@ const Home = () => {
         ) : (
           <p className="text-center text-gray-600">لا توجد منتجات متاحة حاليًا.</p>
         )}
-        <Link to="/schedule" className="block mt-8 text-red-600 hover:text-red-800 transition-colors duration-300">
-          <div className="flex items-center justify-center">
-            <ChevronRight size={20} />
-            <span className="mr-2">عرض الجدول الكامل</span>
-          </div>
-        </Link>
       </div>
     </div>
   );

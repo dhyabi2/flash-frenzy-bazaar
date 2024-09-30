@@ -64,13 +64,10 @@ const ProductCard = ({ product, onUpdate }) => {
   };
 
   const getImageUrl = () => {
-    if (product.image.startsWith('blob:')) {
+    if (imageError || !product.image) {
       return '/placeholder.svg';
-    } else if (product.image.startsWith('http')) {
-      return product.image;
-    } else {
-      return `https://kul-yoom.replit.app${product.image}`;
     }
+    return product.image;
   };
 
   const formattedPrice = typeof product.price === 'number' 
@@ -80,7 +77,7 @@ const ProductCard = ({ product, onUpdate }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
       <img 
-        src={imageError ? '/placeholder.svg' : getImageUrl()}
+        src={getImageUrl()}
         alt={product.name} 
         className="w-full h-48 object-cover mb-4 rounded-md"
         onError={handleImageError}
