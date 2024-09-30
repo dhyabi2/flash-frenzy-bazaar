@@ -38,7 +38,7 @@ const Bookmarks = () => {
           ))}
         </div>
         {bookmarks.length === 0 && (
-          <p className="text-center text-elegant-dark mt-8">لا توجد منتجات محفوظة حالياً.</p>
+          <p className="text-center text-elegant-dark mt-8 text-right">لا توجد منتجات محفوظة حالياً.</p>
         )}
       </div>
     </div>
