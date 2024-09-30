@@ -22,13 +22,13 @@ const Bookmarks = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <Link to="/" className="inline-flex items-center text-blue-500 hover:text-blue-600 mb-6">
+    <div className="min-h-screen bg-elegant-light">
+      <div className="container mx-auto px-4 py-8">
+        <Link to="/" className="inline-flex items-center text-deal-dark hover:text-deal mb-6">
           <ArrowLeft size={20} className="ml-2" />
           العودة إلى الرئيسية
         </Link>
-        <h1 className="text-3xl font-bold mb-6 flex items-center justify-end">
+        <h1 className="text-3xl font-bold mb-6 flex items-center justify-end text-deal-dark">
           المنتجات المحفوظة
           <Bookmark className="ml-3" />
         </h1>
@@ -38,7 +38,7 @@ const Bookmarks = () => {
           ))}
         </div>
         {bookmarks.length === 0 && (
-          <p className="text-center text-gray-600 mt-8">لا توجد منتجات محفوظة حالياً.</p>
+          <p className="text-center text-elegant-dark mt-8">لا توجد منتجات محفوظة حالياً.</p>
         )}
       </div>
     </div>
