@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCurrentFlashSale, getFlashSaleSchedule } from '../utils/flashSaleData';
+import { getCurrentFlashSale } from '../utils/flashSaleData';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
@@ -25,25 +25,6 @@ const TopBanner = () => {
   );
 };
 
-const CategoryNavigation = () => {
-  const schedule = getFlashSaleSchedule();
-  return (
-    <div className="overflow-x-auto whitespace-nowrap p-4 bg-red-50 rounded-lg my-4 shadow-inner">
-      {schedule.map((day, index) => (
-        <Link
-          key={day.date}
-          to={index === 0 ? '/' : '#'}
-          className={`inline-block px-4 py-2 ml-2 rounded-full ${
-            index === 0 ? 'bg-red-600 text-white' : 'bg-white text-red-800 border border-red-300'
-          } transition-all duration-300 hover:shadow-md`}
-        >
-          {day.date}: {day.category}
-        </Link>
-      ))}
-    </div>
-  );
-};
-
 const FlashSaleSection = ({ products, onUpdate }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -54,6 +35,13 @@ const FlashSaleSection = ({ products, onUpdate }) => {
   );
 };
 
+const dummyProducts = [
+  { id: 1, name: 'منتج تجريبي 1', price: 99.99, image: '/placeholder.svg', category: 'عام' },
+  { id: 2, name: 'منتج تجريبي 2', price: 149.99, image: '/placeholder.svg', category: 'عام' },
+  { id: 3, name: 'منتج تجريبي 3', price: 79.99, image: '/placeholder.svg', category: 'عام' },
+  { id: 4, name: 'منتج تجريبي 4', price: 199.99, image: '/placeholder.svg', category: 'عام' },
+];
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const currentSale = getCurrentFlashSale();
@@ -61,12 +49,11 @@ const Home = () => {
   const fetchProductsData = async () => {
     try {
       const fetchedProducts = await fetchProducts();
-      console.log('Fetched products:', fetchedProducts); // Add this line for debugging
       const filteredProducts = fetchedProducts.filter(product => product.category === currentSale.category);
-      console.log('Filtered products:', filteredProducts); // Add this line for debugging
-      setProducts(filteredProducts.sort((a, b) => (b.likes || 0) - (a.likes || 0)));
+      setProducts(filteredProducts.length > 0 ? filteredProducts : dummyProducts);
     } catch (error) {
       console.error('Error fetching products:', error);
+      setProducts(dummyProducts);
     }
   };
 
@@ -78,7 +65,6 @@ const Home = () => {
     <div className="min-h-screen bg-red-50">
       <TopBanner />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <CategoryNavigation />
         <h2 className="text-2xl font-bold mb-4 text-right text-red-800">منتجات اليوم</h2>
         {products.length > 0 ? (
           <FlashSaleSection products={products} onUpdate={fetchProductsData} />
