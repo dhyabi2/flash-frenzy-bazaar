@@ -2,13 +2,13 @@ import { format, addDays, differenceInSeconds, startOfDay, addHours, setHours, s
 import { ar } from 'date-fns/locale';
 
 const categories = [
-  { en: 'Bags', ar: 'حقائب' },
-  { en: 'Abayas', ar: 'عبايات' },
-  { en: 'Dresses', ar: 'فساتين' },
-  { en: 'Shoes', ar: 'أحذية' },
-  { en: 'Accessories', ar: 'إكسسوارات' },
-  { en: 'Jewelry', ar: 'مجوهرات' },
-  { en: 'Cosmetics', ar: 'مستحضرات تجميل' }
+  { en: 'Dresses for Rent', ar: 'فساتين للايجار' },
+  { en: 'Dresses for Rent', ar: 'فساتين للايجار' },
+  { en: 'Dresses for Rent', ar: 'فساتين للايجار' },
+  { en: 'Dresses for Rent', ar: 'فساتين للايجار' },
+  { en: 'Dresses for Rent', ar: 'فساتين للايجار' },
+  { en: 'Dresses for Rent', ar: 'فساتين للايجار' },
+  { en: 'Dresses for Rent', ar: 'فساتين للايجار' }
 ];
 
 const getMuscatTime = () => {
@@ -43,9 +43,9 @@ export const getTimeUntilNextDay = () => {
 
 export const getFlashSaleItems = () => {
   return [
-    { id: 1, name: 'حقيبة يد جلدية', price: 129.99, image: '/placeholder.svg' },
-    { id: 2, name: 'حقيبة ظهر قماشية', price: 79.99, image: '/placeholder.svg' },
-    { id: 3, name: 'حقيبة كتف', price: 89.99, image: '/placeholder.svg' },
-    { id: 4, name: 'حقيبة سفر', price: 149.99, image: '/placeholder.svg' },
+    { id: 1, name: 'فستان سهرة أحمر', price: 129.99, image: '/placeholder.svg', category: 'فساتين للايجار' },
+    { id: 2, name: 'فستان زفاف أبيض', price: 199.99, image: '/placeholder.svg', category: 'فساتين للايجار' },
+    { id: 3, name: 'فستان حفلة أزرق', price: 89.99, image: '/placeholder.svg', category: 'فساتين للايجار' },
+    { id: 4, name: 'فستان سهرة أسود', price: 149.99, image: '/placeholder.svg', category: 'فساتين للايجار' },
   ];
 };

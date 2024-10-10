@@ -61,9 +61,9 @@ const Home = () => {
   const fetchProductsData = async () => {
     try {
       const fetchedProducts = await fetchProducts();
-      console.log('Fetched products:', fetchedProducts); // Add this line for debugging
+      console.log('Fetched products:', fetchedProducts);
       const filteredProducts = fetchedProducts.filter(product => product.category === currentSale.category);
-      console.log('Filtered products:', filteredProducts); // Add this line for debugging
+      console.log('Filtered products:', filteredProducts);
       setProducts(filteredProducts.sort((a, b) => (b.likes || 0) - (a.likes || 0)));
     } catch (error) {
       console.error('Error fetching products:', error);
