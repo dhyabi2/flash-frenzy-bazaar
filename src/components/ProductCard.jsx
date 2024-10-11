@@ -64,6 +64,9 @@ const ProductCard = ({ product, onUpdate }) => {
   };
 
   const getImageUrl = () => {
+    if (!product.image) {
+      return '/placeholder.svg';
+    }
     if (product.image.startsWith('blob:')) {
       return '/placeholder.svg';
     } else if (product.image.startsWith('http')) {
