@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentFlashSale } from '../utils/flashSaleData';
 import { motion } from 'framer-motion';
-import { Upload, Loader2 } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -17,22 +17,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ImageUpload from '../components/ImageUpload';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-
-const productSchema = z.object({
-  name: z.string().min(1, 'اسم المنتج مطلوب'),
-  description: z.string().min(10, 'الوصف يجب أن يكون 10 أحرف على الأقل'),
-  price: z.string().refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, {
-    message: 'السعر يجب أن يكون رقمًا موجبًا',
-  }),
-  phoneNumber: z.string().regex(/^[0-9]{8,}$/, 'رقم الهاتف يجب أن يكون 8 أرقام على الأقل'),
-});
 
 const UploadManagement = () => {
+  const [productName, setProductName] = useState('');
+  const [productDescription, setProductDescription] = useState('');
+  const [productPrice, setProductPrice] = useState('');
   const [productImage, setProductImage] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
   const [isError, setIsError] = useState(false);
@@ -40,21 +31,17 @@ const UploadManagement = () => {
   const navigate = useNavigate();
   const currentSale = getCurrentFlashSale();
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(productSchema),
-  });
-
-  const onSubmit = async (data) => {
-    if (!productImage) {
-      toast.error('الرجاء تحميل صورة للمنتج');
-      return;
-    }
-
-    setIsUploading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const formData = new FormData();
-    Object.keys(data).forEach(key => formData.append(key, data[key]));
+    formData.append('name', productName);
+    formData.append('description', productDescription);
+    formData.append('price', productPrice);
     formData.append('category', currentSale.category);
-    formData.append('image', productImage);
+    formData.append('phoneNumber', phoneNumber);
+    if (productImage) {
+      formData.append('image', productImage);
+    }
 
     try {
       await addProduct(formData);
@@ -66,8 +53,6 @@ const UploadManagement = () => {
       setDialogMessage('حدث خطأ أثناء رفع المنتج. يرجى المحاولة مرة أخرى.');
       setIsError(true);
       setIsDialogOpen(true);
-    } finally {
-      setIsUploading(false);
     }
   };
 
@@ -84,32 +69,38 @@ const UploadManagement = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl max-w-2xl mx-auto mb-16"
+        className="bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl max-w-5xl mx-auto mb-16"
       >
         <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-right text-red-800">رفع منتج لبيع اليوم</h1>
         <p className="mb-8 text-lg sm:text-xl text-gray-600 text-right">الفئة: <span className="font-semibold text-red-600">{currentSale.category}</span></p>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 sm:space-y-8">
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productName">
-              اسم المنتج
-            </label>
-            <Input
-              id="productName"
-              {...register('name')}
-              className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
-            />
-            {errors.name && <p className="text-red-500 text-xs italic text-right mt-1">{errors.name.message}</p>}
-          </div>
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productPrice">
-              السعر
-            </label>
-            <Input
-              id="productPrice"
-              {...register('price')}
-              className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
-            />
-            {errors.price && <p className="text-red-500 text-xs italic text-right mt-1">{errors.price.message}</p>}
+        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productName">
+                اسم المنتج
+              </label>
+              <Input
+                id="productName"
+                type="text"
+                value={productName}
+                onChange={(e) => setProductName(e.target.value)}
+                className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productPrice">
+                السعر
+              </label>
+              <Input
+                id="productPrice"
+                type="number"
+                value={productPrice}
+                onChange={(e) => setProductPrice(e.target.value)}
+                className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
+                required
+              />
+            </div>
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="phoneNumber">
@@ -117,10 +108,12 @@ const UploadManagement = () => {
             </label>
             <Input
               id="phoneNumber"
-              {...register('phoneNumber')}
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
+              required
             />
-            {errors.phoneNumber && <p className="text-red-500 text-xs italic text-right mt-1">{errors.phoneNumber.message}</p>}
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productDescription">
@@ -128,35 +121,25 @@ const UploadManagement = () => {
             </label>
             <Textarea
               id="productDescription"
-              {...register('description')}
+              value={productDescription}
+              onChange={(e) => setProductDescription(e.target.value)}
               className="w-full p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-right transition duration-200"
               rows="4"
+              required
             />
-            {errors.description && <p className="text-red-500 text-xs italic text-right mt-1">{errors.description.message}</p>}
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productImage">
-              الصورة (مطلوبة)
+              الصورة
             </label>
             <ImageUpload productImage={productImage} setProductImage={setProductImage} />
-            {!productImage && <p className="text-red-500 text-sm mt-1 text-right">الرجاء تحميل صورة للمنتج</p>}
           </div>
           <Button
             type="submit"
             className="w-full bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition-colors duration-300 flex items-center justify-center"
-            disabled={isUploading}
           >
-            {isUploading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                جاري الرفع...
-              </>
-            ) : (
-              <>
-                <Upload className="ml-2" />
-                رفع المنتج
-              </>
-            )}
+            <Upload className="ml-2" />
+            رفع المنتج
           </Button>
         </form>
       </motion.div>

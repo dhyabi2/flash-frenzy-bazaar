@@ -64,9 +64,6 @@ const ProductCard = ({ product, onUpdate }) => {
   };
 
   const getImageUrl = () => {
-    if (!product.image) {
-      return null;
-    }
     if (product.image.startsWith('blob:')) {
       return '/placeholder.svg';
     } else if (product.image.startsWith('http')) {
@@ -76,11 +73,6 @@ const ProductCard = ({ product, onUpdate }) => {
     }
   };
 
-  const imageUrl = getImageUrl();
-  if (!imageUrl || imageError) {
-    return null; // Don't render the card if there's no image or if there's an image error
-  }
-
   const formattedPrice = typeof product.price === 'number' 
     ? product.price.toFixed(2) 
     : parseFloat(product.price || 0).toFixed(2);
@@ -88,7 +80,7 @@ const ProductCard = ({ product, onUpdate }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
       <img 
-        src={imageUrl}
+        src={imageError ? '/placeholder.svg' : getImageUrl()}
         alt={product.name} 
         className="w-full h-48 object-cover mb-4 rounded-md"
         onError={handleImageError}

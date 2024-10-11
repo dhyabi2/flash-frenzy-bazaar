@@ -6,7 +6,6 @@ import { ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { fetchProducts } from '../utils/api';
 import CountdownTimer from '../components/CountdownTimer';
-import { Helmet } from 'react-helmet';
 
 const TopBanner = () => {
   const currentSale = getCurrentFlashSale();
@@ -29,7 +28,7 @@ const TopBanner = () => {
 const CategoryNavigation = () => {
   const schedule = getFlashSaleSchedule();
   return (
-    <nav className="overflow-x-auto whitespace-nowrap p-4 bg-red-50 rounded-lg my-4 shadow-inner">
+    <div className="overflow-x-auto whitespace-nowrap p-4 bg-red-50 rounded-lg my-4 shadow-inner">
       {schedule.map((day, index) => (
         <Link
           key={day.date}
@@ -41,17 +40,17 @@ const CategoryNavigation = () => {
           {day.date}: {day.category}
         </Link>
       ))}
-    </nav>
+    </div>
   );
 };
 
 const FlashSaleSection = ({ products, onUpdate }) => {
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map(product => (
         <ProductCard key={product.id} product={product} onUpdate={onUpdate} />
       ))}
-    </section>
+    </div>
   );
 };
 
@@ -76,31 +75,24 @@ const Home = () => {
   }, [currentSale.category]);
 
   return (
-    <>
-      <Helmet>
-        <title>سوق كل يوم🇴🇲 - البيع اليومي للمنتجات في عمان</title>
-        <meta name="description" content="اكتشف أفضل العروض اليومية على المنتجات في عمان. تسوق الآن واحصل على صفقات حصرية كل يوم!" />
-        <link rel="canonical" href="https://kulyoom.replit.app/" />
-      </Helmet>
-      <main className="min-h-screen bg-red-50">
-        <TopBanner />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <CategoryNavigation />
-          <h2 className="text-2xl font-bold mb-4 text-right text-red-800">منتجات اليوم</h2>
-          {products.length > 0 ? (
-            <FlashSaleSection products={products} onUpdate={fetchProductsData} />
-          ) : (
-            <p className="text-center text-gray-600">لا توجد منتجات متاحة حاليًا.</p>
-          )}
-          <Link to="/schedule" className="block mt-8 text-red-600 hover:text-red-800 transition-colors duration-300">
-            <div className="flex items-center justify-center">
-              <ChevronRight size={20} />
-              <span className="mr-2">عرض الجدول الكامل</span>
-            </div>
-          </Link>
-        </div>
-      </main>
-    </>
+    <div className="min-h-screen bg-red-50">
+      <TopBanner />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <CategoryNavigation />
+        <h2 className="text-2xl font-bold mb-4 text-right text-red-800">منتجات اليوم</h2>
+        {products.length > 0 ? (
+          <FlashSaleSection products={products} onUpdate={fetchProductsData} />
+        ) : (
+          <p className="text-center text-gray-600">لا توجد منتجات متاحة حاليًا.</p>
+        )}
+        <Link to="/schedule" className="block mt-8 text-red-600 hover:text-red-800 transition-colors duration-300">
+          <div className="flex items-center justify-center">
+            <ChevronRight size={20} />
+            <span className="mr-2">عرض الجدول الكامل</span>
+          </div>
+        </Link>
+      </div>
+    </div>
   );
 };
 
