@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentFlashSale } from '../utils/flashSaleData';
 import { motion } from 'framer-motion';
-import { Upload, Camera, X } from 'lucide-react';
+import { Upload, Camera } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,6 @@ const UploadManagement = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
   const [isError, setIsError] = useState(false);
-  const fileInputRef = useRef(null);
 
   const navigate = useNavigate();
   const currentSale = getCurrentFlashSale();
@@ -61,17 +60,6 @@ const UploadManagement = () => {
     if (!isError) {
       navigate('/');
     }
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProductImage(file);
-    }
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current.click();
   };
 
   return (
@@ -143,20 +131,14 @@ const UploadManagement = () => {
             <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productImage">
               الصورة
             </label>
-            <div 
-              className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-red-300 border-dashed rounded-lg hover:border-red-500 transition duration-300 cursor-pointer"
-              onClick={triggerFileInput}
-            >
+            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-red-300 border-dashed rounded-lg hover:border-red-500 transition duration-300">
               <div className="space-y-1 text-center">
                 {productImage ? (
                   <div className="relative">
                     <img src={URL.createObjectURL(productImage)} alt="Product" className="mx-auto h-48 w-48 object-cover rounded-lg" />
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setProductImage(null);
-                      }}
+                      onClick={() => setProductImage(null)}
                       className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 transform translate-x-1/2 -translate-y-1/2 hover:bg-red-600 transition duration-200"
                     >
                       <X size={16} />
@@ -171,16 +153,7 @@ const UploadManagement = () => {
                     className="relative cursor-pointer bg-white rounded-md font-medium text-red-600 hover:text-red-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-red-500 transition duration-200"
                   >
                     <span>رفع ملف</span>
-                    <input 
-                      id="productImage" 
-                      name="productImage" 
-                      type="file" 
-                      className="sr-only" 
-                      onChange={handleImageUpload}
-                      ref={fileInputRef}
-                      accept="image/*"
-                      capture="environment"
-                    />
+                    <input id="productImage" name="productImage" type="file" className="sr-only" onChange={(e) => setProductImage(e.target.files[0])} required />
                   </label>
                   <p className="pr-1">أو اسحب وأفلت</p>
                 </div>
