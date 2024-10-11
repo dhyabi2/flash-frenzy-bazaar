@@ -33,15 +33,17 @@ const UploadManagement = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!productImage) {
+      toast.error('الرجاء تحميل صورة للمنتج');
+      return;
+    }
     const formData = new FormData();
     formData.append('name', productName);
     formData.append('description', productDescription);
     formData.append('price', productPrice);
     formData.append('category', currentSale.category);
     formData.append('phoneNumber', phoneNumber);
-    if (productImage) {
-      formData.append('image', productImage);
-    }
+    formData.append('image', productImage);
 
     try {
       await addProduct(formData);
@@ -130,9 +132,10 @@ const UploadManagement = () => {
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2 text-right" htmlFor="productImage">
-              الصورة
+              الصورة (مطلوبة)
             </label>
             <ImageUpload productImage={productImage} setProductImage={setProductImage} />
+            {!productImage && <p className="text-red-500 text-sm mt-1 text-right">الرجاء تحميل صورة للمنتج</p>}
           </div>
           <Button
             type="submit"
