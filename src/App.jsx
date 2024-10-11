@@ -32,24 +32,26 @@ const App = () => {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <BrowserRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/schedule" element={<CategorySchedule />} />
-              <Route path="/item/:id" element={<ItemDetail />} />
-              <Route path="/upload" element={<UploadManagement />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/bookmarks" element={<Bookmarks />} />
-              <Route path="/admin" element={<AdminPage />} />
-            </Routes>
-          </Layout>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <BrowserRouter>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/schedule" element={<CategorySchedule />} />
+                <Route path="/item/:id" element={<ItemDetail />} />
+                <Route path="/upload" element={<UploadManagement />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/bookmarks" element={<Bookmarks />} />
+                <Route path="/admin" element={<AdminPage />} />
+              </Routes>
+            </Layout>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 };
 
