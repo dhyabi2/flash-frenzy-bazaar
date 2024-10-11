@@ -80,7 +80,7 @@ const Home = () => {
       <Helmet>
         <title>سوق كل يوم🇴🇲 - البيع اليومي للمنتجات في عمان</title>
         <meta name="description" content="اكتشف أفضل العروض اليومية على المنتجات في عمان. تسوق الآن واحصل على صفقات حصرية كل يوم!" />
-        <link rel="canonical" href="https://www.souqkulyoom.com/" />
+        <link rel="canonical" href="https://kulyoom.replit.app/" />
       </Helmet>
       <main className="min-h-screen bg-red-50">
         <TopBanner />
